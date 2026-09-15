@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-beta.2
+
+- Ship the revised branded README with clear architecture guidance, four skill descriptions and practical prompts.
+- Add numbered installation instructions and a direct repository link.
+- Keep the smaller publisher logo; omit superseded artwork.
+- Refresh self-contained plugin/source archives and checksum inventory.
+- No changes to skill execution or dashboard behaviour in this release.
+
 ## 0.2.0-beta.1
 
 - Replace the combined skills with four independently scoped skills: App Creation, Architecture Adoption, Swift Concurrency Migration and Architecture Review.

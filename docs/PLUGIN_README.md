@@ -46,7 +46,7 @@ An **AI skill** is a set of instructions and supporting resources that your codi
 
 ## How to install
 
-1. **Choose the plugin download.** Get the `cooperative-feature-architecture-<version>-plugin.zip` archive. Use the plugin ZIP for installation; the source ZIP is for developing the toolkit. Hosted release links will be added when the repository is published.
+1. **Choose the plugin download.** Get the `cooperative-feature-architecture-<version>-plugin.zip` archive. Use the plugin ZIP for installation; the source ZIP is for developing the toolkit. Find published downloads on the [GitHub Releases page](https://github.com/3DaysOfSwift/cooperative-feature-architecture/releases).
 
 2. **Check the prerequisites.** Install Node.js 20 or newer and a Codex CLI that supports `codex plugin add`. Building and testing iPhone apps also requires a Mac and Xcode. These applications are not bundled with CFA.
 
