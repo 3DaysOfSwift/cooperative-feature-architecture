@@ -4,27 +4,30 @@
 
 **Created and published by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) — a free, open-source gift to the iOS development community.**
 
-## What is Cooperative Feature Architecture (CFA)?
-
 - **Declarative SwiftUI Views.** Describe layout and presentation; keep imperative feature logic out of Views.
 - **A bespoke ViewModel for each View.** Each View has a tightly coupled, observable ViewModel for its presentation needs.
 - **One AppModel composition root.** Centralise dependency creation and inversion of control (IoC) in one assembly function.
 - **Observable feature managers.** Each ViewModel retains the observable feature manager it needs.
 - **Feature-owned state.** Each feature manager owns its feature’s data with explicit isolation boundaries.
 - **Actors for concurrent feature work.** Worker actors move suitable work off the Main Actor; Swift’s shared executors schedule independent work across available CPU cores.
-- **An architecture for AI-driven development.** Give developers and AI a shared structure for modern, concurrent commercial iOS apps intended for the App Store.
+- **An architecture for AI-driven development.** Give developers and AI a shared structure for building modern, concurrent commercial iOS apps with an AI copilot, intended for the App Store.
 
 ## What is this AI Skill?
 
-**CFA is a toolkit of four AI skills and one architecture dashboard tool for iOS developers who build applications with AI.** It gives you and your coding agent a shared architecture to follow when creating an Xcode project, improving an existing app or migrating legacy code.
+**The CFA Toolkit contains four AI skills:**
 
-An **AI skill** is a set of instructions and supporting resources that your coding agent loads for a specific job. CFA’s skills tell the agent where code belongs, which component owns each responsibility, how to preserve existing behaviour and what to verify before calling the work complete. The **dashboard tool** reads Swift source and produces a report that helps you inspect the result.
+- CFA App Creation
+- CFA Architecture Adoption
+- Swift Concurrency Migration
+- CFA Architecture Review
 
-This is a modern approach to developing maintainable iOS applications with AI-generated code. Instead of asking the agent to invent the project structure with every change, you give it a consistent template: screens handle presentation, feature managers own business behaviour, and dependencies have defined boundaries. That structure is designed to improve readability, make feature enhancement easier and reduce AI coding mistakes caused by scattered responsibilities or components reaching into one another.
+**It also includes one tool:** Xcode Project Dashboard.
 
-**Use this toolkit to adopt CFA, migrate a legacy GCD codebase to Swift Concurrency, and build toward higher-quality commercial iOS applications with AI.** You can use each skill independently or apply them in stages to the same project.
+The toolkit gives iOS developers and their coding agents a shared architecture to follow when creating an Xcode project, improving an existing app or migrating legacy code.
 
-CFA supports Swift Concurrency through explicit state ownership, actor isolation and task lifetimes. It provides project structure and development guidance; your app does not need to link a CFA runtime library.
+### What is an AI skill?
+
+An **AI skill** is a set of instructions and supporting resources that your coding agent loads for a specific job. CFA’s skills tell the agent where code belongs, which component owns each responsibility, how to preserve existing behaviour and what to verify before calling the work complete.
 
 **Four skills · One tool · MIT licensed · 0.2.0 beta**
 
@@ -71,9 +74,29 @@ See [installation and upgrades](docs/INSTALLATION.md) for existing installations
 
 This skill guides the agent through creating the Xcode project, applying the folder structure and connecting a screen to its ViewModel, feature behaviour and dependencies. It aims for a working user journey with relevant build and test evidence, rather than a collection of empty components.
 
+### Suggested prompts
+
+**Create a new app**
+
 ```text
 Use $cfa-app-creation to create a SwiftUI iPhone app using CFA.
 My app is called Notes. Build the first working note-creation feature.
+```
+
+**Build a complete first feature**
+
+```text
+Use $cfa-app-creation to start a personal journal app. Implement writing,
+saving and displaying an entry, with a bespoke observable ViewModel,
+a feature manager and dependencies assembled by AppModel.
+```
+
+**Start with testable business behaviour**
+
+```text
+Use $cfa-app-creation to build an expense-tracking app. Start with adding
+an expense and calculating the monthly total. Test the business rules
+and verify that the iPhone project builds.
 ```
 
 [Read the App Creation skill](skills/cfa-app-creation/SKILL.md)
@@ -84,9 +107,29 @@ My app is called Notes. Build the first working note-creation feature.
 
 This skill maps the current responsibilities, establishes a behaviour baseline and restructures one feature at a time. It separates screen state from business rules and gives each feature’s state and behaviour an explicit owner. It also supports bringing existing CFA features back into alignment.
 
+### Suggested prompts
+
+**Adopt CFA in an existing app**
+
 ```text
 Use $cfa-architecture-adoption to adopt CFA in this existing app.
 Preserve its behaviour and begin with one complete feature.
+```
+
+**Untangle a feature**
+
+```text
+Use $cfa-architecture-adoption to restructure the checkout feature.
+Move business rules out of Views and ViewModels into its feature manager.
+Give its state a clear owner and preserve checkout behaviour.
+```
+
+**Add a feature to an existing CFA app**
+
+```text
+Use $cfa-architecture-adoption to add favourites to this CFA app.
+Follow its existing ownership rules, give each new screen a bespoke
+ViewModel and assemble the required dependencies through AppModel.
 ```
 
 [Read the Architecture Adoption skill](skills/cfa-architecture-adoption/SKILL.md)
@@ -99,9 +142,44 @@ This skill identifies the guarantees supplied by existing concurrency code—suc
 
 You can use it with an existing architecture. **Concurrency migration does not automatically adopt CFA or replace the UI framework.**
 
+### Suggested prompts
+
+**Migrate a legacy GCD codebase**
+
 ```text
-Use $swift-concurrency-migration to migrate this app’s GCD code.
-Preserve its current architecture, behaviour and operation ordering.
+Use $swift-concurrency-migration to migrate this app’s GCD code to
+Swift Concurrency. Preserve its existing architecture and behaviour.
+Identify the ordering and state-protection guarantees before replacing
+queues, groups and callbacks.
+```
+
+**Modernise both architecture and concurrency**
+
+```text
+Use $cfa-architecture-adoption and $swift-concurrency-migration to
+modernise this legacy GCD app using CFA and Swift Concurrency.
+Establish its existing behaviour, then migrate one complete feature
+at a time with separate architecture and concurrency checkpoints.
+```
+
+This combined request uses two skills: Architecture Adoption changes the
+application structure; Swift Concurrency Migration changes how concurrent
+work is executed and owned.
+
+**Replace a callback-based operation**
+
+```text
+Use $swift-concurrency-migration to convert this callback-based image
+loader to async/await. Preserve cancellation, error delivery and caching.
+Ensure an older request cannot overwrite the result of a newer request.
+```
+
+**Preserve ordering while removing GCD**
+
+```text
+Use $swift-concurrency-migration to replace this serial save queue.
+Preserve the required save order across suspension points and verify
+that overlapping edits cannot leave an older value on disk.
 ```
 
 [Read the Swift Concurrency Migration skill](skills/swift-concurrency-migration/SKILL.md)
@@ -112,9 +190,39 @@ Preserve its current architecture, behaviour and operation ordering.
 
 This skill inspects feature ownership, live dependency wiring and concurrency boundaries without refactoring the app. It reports source-linked findings, their consequences and recommended changes. It can review legacy GCD apps manually and use the dashboard tool for supported Swift Concurrency projects.
 
+### Suggested prompts
+
+**Review the application**
+
 ```text
 Use $cfa-architecture-review to review this app’s feature ownership
 and concurrency boundaries. Report findings without changing app code.
+```
+
+**Review AI-generated changes**
+
+```text
+Use $cfa-architecture-review to review these AI-generated changes
+against CFA. Identify misplaced business logic, duplicated state,
+unnecessary dependencies and unclear task ownership. Cite the code
+behind each finding and recommend focused corrections.
+```
+
+**Generate an architecture dashboard**
+
+```text
+Use $cfa-architecture-review to produce an Xcode Project Dashboard
+for this Swift Concurrency app. Show source-linked findings, task
+journeys and test evidence. Distinguish reviewed judgments from
+executed test results.
+```
+
+**Check a migrated feature**
+
+```text
+Use $cfa-architecture-review to inspect the migrated search feature.
+Trace cancellation, repeated requests and result publication. Identify
+where stale results could reach the UI, without changing the source.
 ```
 
 [Read the Architecture Review skill](skills/cfa-architecture-review/SKILL.md)
