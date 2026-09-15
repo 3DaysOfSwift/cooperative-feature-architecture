@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFA Development"
+  short_description: "Build and migrate SwiftUI apps with CFA"
+  default_prompt: "Use $cfa-development to build or migrate this iOS project with Cooperative Feature Architecture."

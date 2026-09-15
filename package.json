@@ -1,0 +1,17 @@
+{
+  "name": "cooperative-feature-architecture",
+  "version": "0.1.0-beta.1",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency: build with CFA, migrate legacy apps, and review source evidence.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs tools/architecture-dashboard/test/*.test.mjs",
+    "sync": "node scripts/sync.mjs",
+    "validate": "node scripts/validate.mjs",
+    "release": "python3 scripts/release.py"
+  }
+}

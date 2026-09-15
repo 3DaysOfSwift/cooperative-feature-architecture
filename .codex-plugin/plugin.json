@@ -1,0 +1,37 @@
+{
+  "name": "cooperative-feature-architecture",
+  "version": "0.1.0-beta.1",
+  "description": "AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency: build with CFA, migrate legacy apps, and review source evidence.",
+  "author": {
+    "name": "3 Days of Swift Concurrency"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Cooperative Feature Architecture",
+    "shortDescription": "AI-assisted SwiftUI architecture and migration",
+    "longDescription": "CFA gives developers and coding agents a shared architecture for maintainable iOS apps. Includes CFA Development, Xcode Project Dashboard and the local report generator. AI-assisted reviews require source evidence and do not certify race freedom.",
+    "developerName": "3 Days of Swift Concurrency",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Build a SwiftUI iOS app using CFA.",
+      "Migrate this legacy iOS app to CFA and Swift Concurrency.",
+      "Review this Swift app with the Xcode Project Dashboard."
+    ]
+  },
+  "license": "MIT",
+  "keywords": [
+    "swift",
+    "swiftui",
+    "ios",
+    "ai",
+    "architecture",
+    "swift-concurrency",
+    "mvvm",
+    "migration",
+    "cfa"
+  ]
+}
