@@ -1,6 +1,10 @@
 # Origin and extraction
 
-CFA was developed by 3 Days of Swift Concurrency in the Trend iOS application.
+CFA was created by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/)
+and is offered as a free, open-source gift to the iOS development community.
+The publisher offers Swift Concurrency training for iOS developers.
+
+The toolkit began in the Trend iOS application.
 This repository extracts the canonical architecture, development/migration skill,
 dashboard skill and dashboard tool into an independent distribution.
 

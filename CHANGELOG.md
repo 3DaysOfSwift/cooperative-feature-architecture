@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-beta.2
+
+- Identify 3DaysOfSwiftConcurrency.com prominently as creator and publisher.
+- Explain the free community gift, training offering and retained MIT copyright.
+- Clarify CFA’s feature ownership and AI-assisted development benefits.
+
 ## 0.1.0-beta.1 — 2026-09-15
 
 - Extract the architecture, two skills and dashboard from Trend into CFA.

@@ -2,9 +2,25 @@
 
 **An AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency.**
 
-Build new iOS applications, migrate legacy GCD code, and review architecture with
-explicit feature ownership. CFA gives developers and coding agents a shared set
-of rules for Views, ViewModels, feature managers, repositories and actor isolation.
+**Created and published by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) — a free, open-source gift to the iOS development community.**
+
+Cooperative Feature Architecture is a modern approach to iOS development with AI.
+It structures an Xcode project around features with explicit ownership of state,
+behaviour and dependencies. These boundaries help developers and AI coding agents
+identify where a change belongs and extend features without spreading responsibilities
+across unrelated components.
+
+The CFA Toolkit provides architecture rules, development and migration skills, and
+a source review tool. It gives AI concrete constraints to follow, reducing guesswork
+and helping developers avoid a tangled network of app components as an app grows.
+
+## The publisher and its training
+
+[3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) offers iOS
+developer training in Swift Concurrency. CFA shares its approach to maintainable
+application structure with the wider industry. The toolkit is free to use, including
+in commercial projects; no course purchase is required. Visit the website for the
+training programme and course details.
 
 **0.1.0 beta · MIT licensed · Two skills and a local dashboard tool.**
 
@@ -99,3 +115,11 @@ The generated release contains checksums and bundled references. The source arch
 contains the test suites and packaging scripts. Trend is not required.
 
 Created by **3 Days of Swift Concurrency**. See [origin](docs/ORIGIN.md).
+
+## Copyright and permission
+
+Copyright © 2026 3 Days of Swift Concurrency — https://www.3daysofswiftconcurrency.com/.
+Copyright is retained. The [MIT licence](LICENSE) grants permission to use, modify
+and redistribute the toolkit, including commercially, provided its copyright and
+permission notices are retained in copies or substantial portions. Open source
+does not mean public domain.

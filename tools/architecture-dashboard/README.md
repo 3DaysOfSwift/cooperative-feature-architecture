@@ -1,5 +1,11 @@
 # Xcode Project Dashboard tool
 
+Part of Cooperative Feature Architecture, created and published by
+[3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) as a free,
+open-source gift to the iOS development community. The publisher offers Swift
+Concurrency training for iOS developers. Copyright © 2026 3 Days of Swift Concurrency.
+Distributed under the toolkit’s MIT licence.
+
 A local-first starting point for **Modern Architecture Analysis** of Swift and
 Xcode repositories. Locate concurrent work, inspect its source and identify
 questions to investigate before migration. The purpose is understandable code
