@@ -4,6 +4,16 @@
 
 **Created and published by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) — a free, open-source gift to the iOS development community.**
 
+## What is Cooperative Feature Architecture (CFA)?
+
+- **Declarative SwiftUI Views.** Describe layout and presentation; keep imperative feature logic out of Views.
+- **A bespoke ViewModel for each View.** Each View has a tightly coupled, observable ViewModel for its presentation needs.
+- **One AppModel composition root.** Centralise dependency creation and inversion of control (IoC) in one assembly function.
+- **Observable feature managers.** Each ViewModel retains the observable feature manager it needs.
+- **Feature-owned state.** Each feature manager owns its feature’s data with explicit isolation boundaries.
+- **Actors for concurrent feature work.** Worker actors move suitable work off the Main Actor; Swift’s shared executors schedule independent work across available CPU cores.
+- **An architecture for AI-driven development.** Give developers and AI a shared structure for modern, concurrent commercial iOS apps intended for the App Store.
+
 ## What is this AI Skill?
 
 **CFA is a toolkit of four AI skills and one architecture dashboard tool for iOS developers who build applications with AI.** It gives you and your coding agent a shared architecture to follow when creating an Xcode project, improving an existing app or migrating legacy code.
