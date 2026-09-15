@@ -1,4 +1,4 @@
-[![3 Days of Swift Concurrency — iOS developer training](readme-images/3DaysOfSwiftConcurrency-Logo.png)](https://www.3daysofswiftconcurrency.com/)
+[![3 Days of Swift Concurrency — iOS developer training](readme-images/README-Logo-h512.png)](https://www.3daysofswiftconcurrency.com/)
 
 # Cooperative Feature Architecture (CFA)
 
@@ -19,7 +19,7 @@ and helping developers avoid a tangled network of app components as an app grows
 ## The publisher and its training
 
 <a href="https://www.3daysofswiftconcurrency.com/">
-  <img src="readme-images/3DaysOfSwiftConcurrency-Logo.png" alt="3 Days of Swift Concurrency — visit our training website" width="280">
+  <img src="readme-images/README-Logo-h512.png" alt="3 Days of Swift Concurrency — visit our training website" width="280">
 </a>
 
 **[Explore the training at 3DaysOfSwiftConcurrency.com →](https://www.3daysofswiftconcurrency.com/)**
