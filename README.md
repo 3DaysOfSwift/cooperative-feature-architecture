@@ -2,6 +2,8 @@
 
 # Cooperative Feature Architecture (CFA)
 
+**[View the CFA Toolkit on GitHub](https://github.com/3DaysOfSwift/cooperative-feature-architecture)**
+
 **Created and published by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) — a free, open-source gift to the iOS development community.**
 
 - **Declarative SwiftUI Views.** Describe layout and presentation; keep imperative feature logic out of Views.
