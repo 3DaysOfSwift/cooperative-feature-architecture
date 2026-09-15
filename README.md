@@ -16,12 +16,13 @@
 
 ## What is this AI Skill?
 
-**The CFA Toolkit contains four AI skills:**
+**The CFA Toolkit contains five AI skills:**
 
 - CFA App Creation
 - CFA Architecture Adoption
 - Swift Concurrency Migration
 - CFA Architecture Review
+- CFA Codebase Tidy
 
 **It also includes one tool:** Xcode Project Dashboard.
 
@@ -31,7 +32,7 @@ The toolkit gives iOS developers and their coding agents a shared architecture t
 
 An **AI skill** is a set of instructions and supporting resources that your coding agent loads for a specific job. CFA’s skills tell the agent where code belongs, which component owns each responsibility, how to preserve existing behaviour and what to verify before calling the work complete.
 
-**Four skills · One tool · MIT licensed · 0.2.0 beta**
+**Five skills · One tool · MIT licensed · 0.2.0 beta**
 
 ## Why this architecture?
 
@@ -58,7 +59,7 @@ An **AI skill** is a set of instructions and supporting resources that your codi
    node scripts/install.mjs
    ```
 
-   On macOS, you can also open `Install.command` in that folder. The installer copies the plugin into your personal plugin location and asks Codex to activate all four skills. If activation fails, it reports the error and provides a retry command.
+   On macOS, you can also open `Install.command` in that folder. The installer copies the plugin into your personal plugin location and asks Codex to activate all five skills. If activation fails, it reports the error and provides a retry command.
 
 5. **Open a new Codex conversation with your Xcode project.** Choose the skill for your task and use one of the prompts below. For example:
 
@@ -66,7 +67,7 @@ An **AI skill** is a set of instructions and supporting resources that your codi
    Use $cfa-architecture-review to review this app without changing its source.
    ```
 
-**Using another compatible coding agent?** Run `node scripts/install.mjs --mode skills` instead of the plugin installation command. This places four self-contained skill folders under `~/.agents/skills`; check your agent’s skill-discovery requirements.
+**Using another compatible coding agent?** Run `node scripts/install.mjs --mode skills` instead of the plugin installation command. This places five self-contained skill folders under `~/.agents/skills`; check your agent’s skill-discovery requirements.
 
 See [installation and upgrades](docs/INSTALLATION.md) for existing installations, custom locations and troubleshooting. Users of the original two-skill release should read its upgrade section first.
 
@@ -285,3 +286,16 @@ python3 scripts/release.py
 Release packaging requires Python 3 and Node.js 20+. There are no npm dependencies to install. Install from the generated plugin package, not the source checkout.
 
 See [Contributing](CONTRIBUTING.md), the [release process](docs/PUBLISHING.md) and the toolkit’s [origin](docs/ORIGIN.md).
+
+## Maintain an existing CFA codebase
+
+Use **CFA Codebase Tidy** for iterative maintenance: simplify the View layer, keep SwiftUI declarative, move reusable behaviour into features, review actor ownership, and fill unit-test gaps. Every ViewModel gets a dedicated suite; each feature manager is audited by function and observable behaviour.
+
+```text
+Use $cfa-codebase-tidy to refine this CFA project and add missing unit tests.
+Preserve existing behaviour and report verification results and remaining gaps.
+```
+
+The workflow changes code when requested. Architecture Review remains read-only.
+
+[Read the Codebase Tidy skill](skills/cfa-codebase-tidy/SKILL.md)

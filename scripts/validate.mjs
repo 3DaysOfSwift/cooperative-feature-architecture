@@ -9,7 +9,7 @@ export function validate(base=root,{source=true}={}) {
   if(!/^\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?$/.test(manifest.version)) throw Error('Invalid release version.');
   if(manifest.license!=='MIT' || manifest.skills!=='./skills/') throw Error('Missing licence or skills path.');
   for(const file of ['LICENSE','README.md','docs/INSTALLATION.md','docs/PRIVACY.md']) if(!fs.existsSync(path.join(base,file))) throw Error(`Missing ${file}`);
-  for(const name of ['cfa-app-creation', 'cfa-architecture-adoption', 'swift-concurrency-migration', 'cfa-architecture-review']) {
+  for(const name of ['cfa-app-creation', 'cfa-architecture-adoption', 'swift-concurrency-migration', 'cfa-architecture-review', 'cfa-codebase-tidy']) {
     const skill=path.join(base,'skills',name);
     const text=fs.readFileSync(path.join(skill,'SKILL.md'),'utf8');
     if(!text.startsWith('---\n') || !text.includes(`name: ${name}\n`) || !/^description: .+/m.test(text)) throw Error(`Invalid skill: ${name}`);
@@ -28,7 +28,7 @@ export function validate(base=root,{source=true}={}) {
   }
   if(source) {
     if(json(path.join(base,'package.json')).version!==manifest.version) throw Error('Version mismatch.');
-    for(const name of ['cfa-app-creation','cfa-architecture-adoption','cfa-architecture-review']) if(hash(path.join(base,'architecture/cfa-specification.md'))!==hash(path.join(base,`skills/${name}/references/cfa-specification.md`))) throw Error('Stale architecture copy. Run npm run sync.');
+    for(const name of ['cfa-app-creation','cfa-architecture-adoption','cfa-architecture-review','cfa-codebase-tidy']) if(hash(path.join(base,'architecture/cfa-specification.md'))!==hash(path.join(base,`skills/${name}/references/cfa-specification.md`))) throw Error('Stale architecture copy. Run npm run sync.');
     for(const dir of ['src','Documentation']) for(const file of files(path.join(base,'tools/architecture-dashboard',dir))) {
       if(hash(path.join(base,'tools/architecture-dashboard',dir,file))!==hash(path.join(base,'skills/cfa-architecture-review/scripts/dashboard',dir,file))) throw Error(`Stale bundled tool: ${file}`);
     }

@@ -8,7 +8,7 @@
 - For AI-guided workflows: your own supported agent/account and its normal permissions.
 
 Node.js, Xcode and the AI host are not bundled. The package contains the architecture,
-all four skills, references and dashboard executable source, with no Trend dependency.
+all five skills, references and dashboard executable source, with no Trend dependency.
 
 ## Recommended: Codex plugin
 
@@ -50,7 +50,7 @@ compatibility with every host version.
 node scripts/install.mjs --mode skills
 ```
 
-This installs all four folders under `~/.agents/skills`. Each is self-contained: the
+This installs all five folders under `~/.agents/skills`. Each is self-contained: the
 CFA specification is bundled in creation, adoption and review skills; the dashboard source and docs
 are inside the review skill. Check the target agent’s documented discovery path.
 For a different location, `--destination /path/to/profile-root` places the skills
@@ -75,7 +75,7 @@ names disappear from the active package. Open a new conversation afterward.
 For standalone mode, the installer refuses to proceed if `cfa-development` or
 `xcode-project-dashboard` remains under `.agents/skills`. Move these legacy folders
 outside the host’s skill discovery directory first, retaining any edits, then install
-the four new skills. This prevents duplicate or conflicting guidance. The installer
+the five new skills. This prevents duplicate or conflicting guidance. The installer
 never silently deletes an old skill or guesses whether local edits are disposable.
 
 ## Uninstall
@@ -85,9 +85,9 @@ substituting the marketplace name printed by the installer if it was not `person
 This removes native activation; the staged source and marketplace listing can remain
 for reinstall. Remove those deliberately only when you no longer need them.
 
-For standalone skills, remove only the four installed folders printed by the installer:
-`cfa-app-creation`, `cfa-architecture-adoption`, `swift-concurrency-migration` and
-`cfa-architecture-review`. Keep any local edits first.
+For standalone skills, remove only the five installed folders printed by the installer:
+`cfa-app-creation`, `cfa-architecture-adoption`, `swift-concurrency-migration`,
+`cfa-architecture-review`, and `cfa-codebase-tidy`. Keep any local edits first.
 
 ## Offline staging and checksums
 

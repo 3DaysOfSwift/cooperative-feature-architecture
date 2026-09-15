@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFA Codebase Tidy"
+  short_description: "Refine CFA structure, behaviour and unit-test coverage"
+  default_prompt: "Use $cfa-codebase-tidy to tidy this CFA project in verified passes and fill its unit-test gaps."

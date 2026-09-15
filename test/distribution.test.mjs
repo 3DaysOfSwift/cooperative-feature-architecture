@@ -16,8 +16,12 @@ test('standalone release carries scanner dependencies and scans outside the sour
  const {dir,source}=release(t); const destination=path.join(dir,'customer');
  const result=install({source,destination,mode:'skills'});
  assert.equal(result.status,'installed');
- assert.equal(result.paths.length,4);
+ assert.equal(result.paths.length,5);
  for(const installed of result.paths) assert.ok(fs.existsSync(path.join(installed,'SKILL.md')));
+ const tidy=path.join(destination,'.agents/skills/cfa-codebase-tidy');
+ assert.ok(result.paths.includes(tidy));
+ for(const resource of ['references/cfa-specification.md','references/product-behaviour-contract.md','agents/openai.yaml','LICENSE']) assert.ok(fs.existsSync(path.join(tidy,resource)));
+ assert.equal(hash(path.join(tidy,'references/cfa-specification.md')),hash(path.join(root,'architecture/cfa-specification.md')));
  const cli=path.join(destination,'.agents/skills/cfa-architecture-review/scripts/dashboard/src/cli.mjs');
  const fixture=path.join(dir,'unrelated-app');fs.mkdirSync(fixture);
  fs.writeFileSync(path.join(fixture,'Feature.swift'),'actor Feature { func refresh() async { await Task.yield() } }');

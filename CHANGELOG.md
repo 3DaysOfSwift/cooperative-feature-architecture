@@ -1,3 +1,7 @@
+# Unreleased
+
+- Added CFA Codebase Tidy as the fifth independently installable workflow, with bundled architecture and behaviour references, iterative cleanup, and ViewModel/feature-manager unit-test audits.
+
 # Changelog
 
 ## 0.2.0-beta.2
