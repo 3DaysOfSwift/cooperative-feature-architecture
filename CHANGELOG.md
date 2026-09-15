@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-beta.3
+
+- Add linked publisher banner and logo to source and plugin READMEs.
+- Bundle brand images in both downloadable archives.
+
 ## 0.1.0-beta.2
 
 - Identify 3DaysOfSwiftConcurrency.com prominently as creator and publisher.

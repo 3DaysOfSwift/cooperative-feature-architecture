@@ -1,3 +1,5 @@
+[![3 Days of Swift Concurrency — iOS developer training](readme-images/3DaysOfSwift-Concurrency-Header.png)](https://www.3daysofswiftconcurrency.com/)
+
 # Cooperative Feature Architecture (CFA)
 
 **An AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency.**
@@ -15,6 +17,12 @@ a source review tool. It gives AI concrete constraints to follow, reducing guess
 and helping developers avoid a tangled network of app components as an app grows.
 
 ## The publisher and its training
+
+<a href="https://www.3daysofswiftconcurrency.com/">
+  <img src="readme-images/3DaysOfSwiftConcurrency-Logo.png" alt="3 Days of Swift Concurrency — visit our training website" width="280">
+</a>
+
+**[Explore the training at 3DaysOfSwiftConcurrency.com →](https://www.3daysofswiftconcurrency.com/)**
 
 [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) offers iOS
 developer training in Swift Concurrency. CFA shares its approach to maintainable

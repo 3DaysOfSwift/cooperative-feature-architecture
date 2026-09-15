@@ -1,6 +1,6 @@
 {
   "name": "cooperative-feature-architecture",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency: build with CFA, migrate legacy apps, and review source evidence.",
   "author": {
     "name": "3 Days of Swift Concurrency"
