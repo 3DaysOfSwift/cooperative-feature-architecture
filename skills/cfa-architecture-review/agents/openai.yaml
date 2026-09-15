@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFA Architecture Review"
+  short_description: "CFA Architecture Review for iOS developers"
+  default_prompt: "Use $cfa-architecture-review for the requested iOS project task."

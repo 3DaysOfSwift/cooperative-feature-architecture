@@ -9,16 +9,18 @@ export function sync(base = root) {
     fs.mkdirSync(path.dirname(to),{recursive:true});
     fs.copyFileSync(from,to);
   };
-  copy('architecture/cfa-specification.md','skills/cfa-development/references/cfa-specification.md');
+  for (const name of ['cfa-app-creation','cfa-architecture-adoption','cfa-architecture-review']) copy('architecture/cfa-specification.md',`skills/${name}/references/cfa-specification.md`);
+  for (const name of ['cfa-app-creation','cfa-architecture-adoption']) copy('architecture/reference-feature.md',`skills/${name}/references/reference-feature.md`);
+  for (const name of ['cfa-architecture-adoption','swift-concurrency-migration']) copy('architecture/product-behaviour-contract.md',`skills/${name}/references/product-behaviour-contract.md`);
   const tool=path.join(base,'tools/architecture-dashboard');
-  const bundled=path.join(base,'skills/xcode-project-dashboard/scripts/dashboard');
+  const bundled=path.join(base,'skills/cfa-architecture-review/scripts/dashboard');
   if (fs.existsSync(bundled)) {
     if(fs.lstatSync(bundled).isSymbolicLink()) throw Error('Refusing to replace a linked dependency folder.');
     fs.rmSync(bundled,{recursive:true});
   }
-  for(const dir of ['src','Documentation']) for(const file of files(path.join(tool,dir))) copy(`tools/architecture-dashboard/${dir}/${file}`,`skills/xcode-project-dashboard/scripts/dashboard/${dir}/${file}`);
-  for(const file of ['README.md','package.json']) copy(`tools/architecture-dashboard/${file}`,`skills/xcode-project-dashboard/scripts/dashboard/${file}`);
-  for(const skill of ['cfa-development','xcode-project-dashboard']) copy('LICENSE',`skills/${skill}/LICENSE`);
-  copy('LICENSE','skills/xcode-project-dashboard/scripts/dashboard/LICENSE');
+  for(const dir of ['src','Documentation']) for(const file of files(path.join(tool,dir))) copy(`tools/architecture-dashboard/${dir}/${file}`,`skills/cfa-architecture-review/scripts/dashboard/${dir}/${file}`);
+  for(const file of ['README.md','package.json']) copy(`tools/architecture-dashboard/${file}`,`skills/cfa-architecture-review/scripts/dashboard/${file}`);
+  for(const skill of ['cfa-app-creation', 'cfa-architecture-adoption', 'swift-concurrency-migration', 'cfa-architecture-review']) copy('LICENSE',`skills/${skill}/LICENSE`);
+  copy('LICENSE','skills/cfa-architecture-review/scripts/dashboard/LICENSE');
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href) { sync(); console.log('Bundled skill dependencies synchronised.'); }

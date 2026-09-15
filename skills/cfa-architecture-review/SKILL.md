@@ -1,0 +1,16 @@
+---
+name: cfa-architecture-review
+description: Review iOS feature ownership and CFA conformance without changing app code; also produce evidence-grounded Xcode architecture and concurrency dashboards when requested. Works with legacy apps through manual source review.
+---
+
+# CFA Architecture Review
+
+Review the requested scope without refactoring the application.
+
+For CFA conformance, read the [CFA specification](references/cfa-specification.md) and inspect actual source and live wiring. Trace screen state, business decisions, authoritative feature state, AppModel construction and repository boundaries. Report findings with source locations, consequences and actionable recommendations. Distinguish intentional departures from defects. Do not require a type named AppModel when reviewing another architecture.
+
+For a dashboard or detailed concurrency analysis, read the [dashboard workflow](references/dashboard-workflow.md). The bundled tool is at `scripts/dashboard/src/cli.mjs` relative to this skill; it requires Node.js 20+. It inventories source patterns, not semantic correctness. Only use its concurrency dashboard when the selected scope contains Swift Concurrency. If the app uses only GCD, continue a manual ownership and concurrency review; mark the dashboard unavailable rather than refusing the review or inventing zero scores.
+
+A focused CFA review does not require an app-wide dashboard or numerical ratings. A requested full dashboard requires the complete source-evidence workflow. Do not infer testing evidence from source inspection or claim race freedom from a score.
+
+Deliver findings and verification limits. Keep generated reports outside app source. App changes, architecture adoption and concurrency migration require their own requested scope; this review does not authorize them.

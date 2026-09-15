@@ -30,15 +30,17 @@ application structure with the wider industry. The toolkit is free to use, inclu
 in commercial projects; no course purchase is required. Visit the website for the
 training programme and course details.
 
-**0.1.0 beta · MIT licensed · Two skills and a local dashboard tool.**
+**0.2.0 beta · MIT licensed · Four skills and a local dashboard tool.**
 
 ## What you get
 
 | Component | Purpose |
 | --- | --- |
 | [CFA specification](architecture/cfa-specification.md) | The architecture, folder map, ownership rules and review checklist |
-| [CFA Development](skills/cfa-development/SKILL.md) | Build and maintain CFA apps; deliberately migrate existing apps when requested |
-| [Xcode Project Dashboard](skills/xcode-project-dashboard/SKILL.md) | Guide source-based architecture and concurrency reviews |
+| [CFA App Creation](skills/cfa-app-creation/SKILL.md) | Build a new Xcode project with a working CFA feature |
+| [CFA Architecture Adoption](skills/cfa-architecture-adoption/SKILL.md) | Restructure existing code around CFA while preserving behaviour |
+| [Swift Concurrency Migration](skills/swift-concurrency-migration/SKILL.md) | Replace GCD and callbacks while preserving the existing architecture |
+| [CFA Architecture Review](skills/cfa-architecture-review/SKILL.md) | Inspect feature ownership and concurrency without refactoring |
 | [Dashboard tool](tools/architecture-dashboard/README.md) | Inventory Swift source and render evidence-backed reports locally |
 
 CFA is a method, not a runtime framework. Generated apps do not need to link a CFA
@@ -54,12 +56,12 @@ Download the **plugin ZIP** from this repository’s Releases, extract it, and f
 node scripts/install.mjs
 ```
 
-This installs into your personal Codex plugin location and activates both skills.
+This installs into your personal Codex plugin location and activates all four skills.
 It requires Node.js 20+ and a compatible Codex CLI exposing `codex plugin add`.
 No administrator rights or package downloads are needed. The script shows errors
 instead of claiming success if native activation is unavailable.
 
-For another compatible agent, install the two self-contained skill folders:
+For another compatible agent, install the four self-contained skill folders:
 
 ```sh
 node scripts/install.mjs --mode skills
@@ -76,11 +78,12 @@ Release packaging requires Python 3; ordinary installation requires only Node.js
 
 ## Try the skills
 
-- `Use $cfa-development to create a SwiftUI iOS app using CFA. My app is called Notes and my bundle prefix is com.example.`
-- `Use $cfa-development to migrate this legacy application to CFA. Preserve its existing product behaviour.`
-- `Use $xcode-project-dashboard to review this Swift Concurrency app. Keep the analysis read-only and distinguish source judgments from executed tests.`
+- `Use $cfa-app-creation to create a SwiftUI iOS app using CFA. My app is called Notes and my bundle prefix is com.example.`
+- `Use $cfa-architecture-adoption to adopt CFA in this existing application. Preserve its existing product behaviour.`
+- `Use $swift-concurrency-migration to migrate GCD code while preserving this app’s existing architecture.`
+- `Use $cfa-architecture-review to review this Swift Concurrency app. Keep the analysis read-only and distinguish source judgments from executed tests.`
 
-The development skill follows the user’s requested architecture. It does not
+The skills follow the user’s requested architecture. They do not
 replace another established architecture merely because it is installed.
 
 ## The ownership flow

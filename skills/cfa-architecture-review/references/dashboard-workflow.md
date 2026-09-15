@@ -1,27 +1,22 @@
----
-name: xcode-project-dashboard
-description: Generate an Xcode Project Dashboard for modern iOS applications using Swift Concurrency, including task journeys, architecture ratings, UI/Model separation and test-quality reviews. Use for dashboard and architecture-analysis requests or detailed concurrency workflows. Supports SwiftUI MVVM, feature managers and a central composition root without depending on a particular app. Not for projects without Swift Concurrency or for automatic app refactoring.
-metadata:
-  short-description: Rate and visualise modern iOS architecture
----
+
 
 # Xcode Project Dashboard
 
 ## Setup
 
 Keep this entire skill folder together. The release includes the standard
-report generator at `scripts/dashboard/src/cli.mjs` and its documentation.
+report generator at `../scripts/dashboard/src/cli.mjs` and its documentation.
 Run `node scripts/dashboard/src/cli.mjs --help` from this skill folder before
 using it. Node.js 20+ is required; Xcode is required only for iOS build/test runs.
 No Trend checkout, package download or network access is required by the scanner.
-Read [Dashboard review and ratings](references/dashboard-review.md#reusable-tool-inputs).
+Read [Dashboard review and ratings](dashboard-review.md#reusable-tool-inputs).
 
 ## Review
 
-For dashboard requests, read [Dashboard review and ratings](references/dashboard-review.md)
+For dashboard requests, read [Dashboard review and ratings](dashboard-review.md)
 completely. Ratings are a required part of the review workflow, not prohibited.
-Also read [Full-analysis completion gate](references/full-analysis.md) completely.
-For concurrency evaluation, also read [Concurrency warnings](references/concurrency-warnings.md)
+Also read [Full-analysis completion gate](full-analysis.md) completely.
+For concurrency evaluation, also read [Concurrency warnings](concurrency-warnings.md)
 completely and perform its end-to-end operation traces. The scanner does not do
 this semantic work automatically.
 An unqualified project-dashboard request requires the entire in-scope project,
@@ -98,7 +93,7 @@ trigger. Show creation edges, structured-child edges, and await/join relationshi
 with distinct labels. Keep a source-linked inventory alongside the overview when
 the full list would overwhelm the picture.
 
-For a workflow, read [Journey diagrams](references/journey-diagrams.md) and trace
+For a workflow, read [Journey diagrams](journey-diagrams.md) and trace
 the complete path before drawing it. Prefer a small number of task lanes with
 plain-English steps. Keep the same task identity as it crosses actor boundaries.
 Show alternative paths separately or on demand rather than making the primary
@@ -134,6 +129,6 @@ the requested visual and source inventory without claiming an imported report.
   publish diagrams or commit changes unless requested. If observation is needed
   to settle a question, explain the smallest relevant diagnostic next step.
 
-The [Trend Load Habits example](references/trend-load-habits.md) explains the
+The [Trend Load Habits example](trend-load-habits.md) explains the
 starting example for this skill. Read it when adapting its included visual asset;
 it illustrates the method, not a required architecture for other repositories.

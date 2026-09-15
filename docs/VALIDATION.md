@@ -1,4 +1,17 @@
-# Validation evidence — 0.1.0-beta.1
+# Validation evidence — 0.2.0-beta.1
+
+- All 33 tests passed, including four-skill standalone installation, bundled scanner
+  execution, managed upgrades and refusal of conflicting legacy skill folders.
+- The official plugin validator and all four skill quick validators passed.
+- Generated CFA references resolve within each standalone skill; concurrency
+  migration has no CFA specification dependency.
+- Skill scope and reference routing were inspected. No end-to-end app creation,
+  architecture adoption or GCD migration was performed in this packaging update.
+- Native Codex activation and GitHub publication remain untested/unperformed.
+
+## Earlier extraction evidence
+
+### Validation evidence — 0.1.0-beta.1
 
 Validated on macOS with Node.js 24.19.0 on 2026-09-15.
 

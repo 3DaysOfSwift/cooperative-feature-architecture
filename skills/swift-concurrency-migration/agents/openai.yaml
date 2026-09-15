@@ -1,0 +1,4 @@
+interface:
+  display_name: "Swift Concurrency Migration"
+  short_description: "Swift Concurrency Migration for iOS developers"
+  default_prompt: "Use $swift-concurrency-migration for the requested iOS project task."

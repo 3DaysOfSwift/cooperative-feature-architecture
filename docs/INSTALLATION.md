@@ -8,7 +8,7 @@
 - For AI-guided workflows: your own supported agent/account and its normal permissions.
 
 Node.js, Xcode and the AI host are not bundled. The package contains the architecture,
-both skills, references and dashboard executable source, with no Trend dependency.
+all four skills, references and dashboard executable source, with no Trend dependency.
 
 ## Recommended: Codex plugin
 
@@ -36,8 +36,8 @@ If `codex` is not on PATH, pass its executable explicitly:
 node scripts/install.mjs --codex /path/to/codex
 ```
 
-Open a **new conversation** after installation. Try `$cfa-development` or
-`$xcode-project-dashboard`; some hosts display plugin-qualified names in their skill picker.
+Open a **new conversation** after installation. Try `$cfa-app-creation` or
+`$cfa-architecture-review`; some hosts display plugin-qualified names in their skill picker.
 
 If native Codex activation fails, the installer exits unsuccessfully and explains
 how to retry. The source and marketplace entry stay staged; it does not claim that
@@ -50,8 +50,8 @@ compatibility with every host version.
 node scripts/install.mjs --mode skills
 ```
 
-This installs both folders under `~/.agents/skills`. Each is self-contained: the
-CFA specification is inside the development skill; the dashboard source and docs
+This installs all four folders under `~/.agents/skills`. Each is self-contained: the
+CFA specification is bundled in creation, adoption and review skills; the dashboard source and docs
 are inside the review skill. Check the target agent’s documented discovery path.
 For a different location, `--destination /path/to/profile-root` places the skills
 beneath that root’s `.agents/skills`. This is a filesystem installation, not a promise
@@ -67,6 +67,17 @@ folders are not overwritten; move them aside deliberately before retrying.
 The installer preserves the existing marketplace name, metadata, other plugins and
 an existing CFA policy entry. It refuses a CFA entry pointing to a different source.
 
+### Upgrading from the original two-skill release
+
+Plugin mode replaces the whole managed package with `--replace`, so the old skill
+names disappear from the active package. Open a new conversation afterward.
+
+For standalone mode, the installer refuses to proceed if `cfa-development` or
+`xcode-project-dashboard` remains under `.agents/skills`. Move these legacy folders
+outside the host’s skill discovery directory first, retaining any edits, then install
+the four new skills. This prevents duplicate or conflicting guidance. The installer
+never silently deletes an old skill or guesses whether local edits are disposable.
+
 ## Uninstall
 
 For a plugin, use `codex plugin remove cooperative-feature-architecture@personal`,
@@ -74,8 +85,9 @@ substituting the marketplace name printed by the installer if it was not `person
 This removes native activation; the staged source and marketplace listing can remain
 for reinstall. Remove those deliberately only when you no longer need them.
 
-For standalone skills, remove only the two installed folders printed by the installer:
-`cfa-development` and `xcode-project-dashboard`. Keep any local edits first.
+For standalone skills, remove only the four installed folders printed by the installer:
+`cfa-app-creation`, `cfa-architecture-adoption`, `swift-concurrency-migration` and
+`cfa-architecture-review`. Keep any local edits first.
 
 ## Offline staging and checksums
 

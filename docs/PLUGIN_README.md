@@ -30,7 +30,8 @@ application structure with the wider industry. The toolkit is free to use, inclu
 in commercial projects; no course purchase is required. Visit the website for the
 training programme and course details.
 
-This complete plugin package includes **CFA Development**, **Xcode Project Dashboard**,
+This complete plugin package includes **CFA App Creation**, **CFA Architecture Adoption**,
+**Swift Concurrency Migration**, **CFA Architecture Review**,
 the architecture specification and the dashboard executable. No Trend checkout is needed.
 
 ## Install
@@ -47,24 +48,25 @@ Read [installation and upgrades](docs/INSTALLATION.md) for paths, prerequisites 
 
 ## Use
 
-- `Use $cfa-development to build a SwiftUI iOS app using CFA. My bundle prefix is com.example.`
-- `Use $cfa-development to migrate this legacy app while preserving its product behaviour.`
-- `Use $xcode-project-dashboard to review this app without modifying its source.`
+- `Use $cfa-app-creation to build a SwiftUI iOS app using CFA. My bundle prefix is com.example.`
+- `Use $cfa-architecture-adoption to adopt CFA in this existing app while preserving its product behaviour.`
+- `Use $swift-concurrency-migration to replace GCD while retaining this app’s architecture.`
+- `Use $cfa-architecture-review to review this app without modifying its source.`
 
 The bundled scanner can also run directly:
 
 ```sh
-node skills/xcode-project-dashboard/scripts/dashboard/src/cli.mjs /path/to/app --out /path/to/new-report
+node skills/cfa-architecture-review/scripts/dashboard/src/cli.mjs /path/to/app --out /path/to/new-report
 ```
 
 See the [CFA specification](architecture/cfa-specification.md),
-[development skill](skills/cfa-development/SKILL.md),
-[dashboard skill](skills/xcode-project-dashboard/SKILL.md), and
+[development skill](skills/cfa-app-creation/SKILL.md),
+[dashboard skill](skills/cfa-architecture-review/SKILL.md), and
 [privacy explanation](docs/PRIVACY.md).
 
 ## Status
 
-0.1.0 beta. The dashboard inventories source patterns; a review supplies semantic
+0.2.0 beta. The dashboard inventories source patterns; a review supplies semantic
 judgments. Neither a score nor a successful build certifies production readiness.
 Node.js, Xcode and an AI host are separate prerequisites. No developer-server telemetry
 or network dependency is built into the scanner, but your AI host has its own data policy.

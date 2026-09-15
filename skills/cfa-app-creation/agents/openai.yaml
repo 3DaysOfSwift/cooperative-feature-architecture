@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFA App Creation"
+  short_description: "CFA App Creation for iOS developers"
+  default_prompt: "Use $cfa-app-creation for the requested iOS project task."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CFA Architecture Adoption"
+  short_description: "CFA Architecture Adoption for iOS developers"
+  default_prompt: "Use $cfa-architecture-adoption for the requested iOS project task."

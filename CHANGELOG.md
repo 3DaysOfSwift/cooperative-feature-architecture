@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-beta.1
+
+- Replace the combined skills with four independently scoped skills: App Creation, Architecture Adoption, Swift Concurrency Migration and Architecture Review.
+- Keep a canonical CFA specification with self-contained distribution copies.
+- Support manual architecture review of pure GCD apps.
+- Update installation, invocation examples and legacy upgrade guidance.
+- Use the supplied smaller publisher logo in downloadable packages.
+
 ## 0.1.0-beta.3
 
 - Add linked publisher banner and logo to source and plugin READMEs.

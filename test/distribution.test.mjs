@@ -16,7 +16,9 @@ test('standalone release carries scanner dependencies and scans outside the sour
  const {dir,source}=release(t); const destination=path.join(dir,'customer');
  const result=install({source,destination,mode:'skills'});
  assert.equal(result.status,'installed');
- const cli=path.join(destination,'.agents/skills/xcode-project-dashboard/scripts/dashboard/src/cli.mjs');
+ assert.equal(result.paths.length,4);
+ for(const installed of result.paths) assert.ok(fs.existsSync(path.join(installed,'SKILL.md')));
+ const cli=path.join(destination,'.agents/skills/cfa-architecture-review/scripts/dashboard/src/cli.mjs');
  const fixture=path.join(dir,'unrelated-app');fs.mkdirSync(fixture);
  fs.writeFileSync(path.join(fixture,'Feature.swift'),'actor Feature { func refresh() async { await Task.yield() } }');
  const report=path.join(dir,'report');
@@ -37,7 +39,7 @@ test('plugin staging preserves unrelated marketplace configuration and names',t=
  assert.deepEqual(json(market).plugins[0],existing.plugins[0]);
  assert.deepEqual(json(market).interface,existing.interface);
  assert.equal(json(market).plugins[1].source.path,'./plugins/cooperative-feature-architecture');
- assert.ok(fs.existsSync(path.join(destination,'plugins/cooperative-feature-architecture/skills/cfa-development/references/cfa-specification.md')));
+ assert.ok(fs.existsSync(path.join(destination,'plugins/cooperative-feature-architecture/skills/cfa-app-creation/references/cfa-specification.md')));
 });
 
 test('installer rejects tampered releases before writing destination',t=>{
@@ -49,11 +51,11 @@ test('installer rejects tampered releases before writing destination',t=>{
 
 test('existing unmanaged skill directories are never overwritten',t=>{
  const {dir,source}=release(t);const destination=path.join(dir,'customer');
- const owned=path.join(destination,'.agents/skills/cfa-development');fs.mkdirSync(owned,{recursive:true});
+ const owned=path.join(destination,'.agents/skills/cfa-app-creation');fs.mkdirSync(owned,{recursive:true});
  fs.writeFileSync(path.join(owned,'mine.txt'),'keep');
  assert.throws(()=>install({source,destination,mode:'skills',replace:true}),/Not a CFA-managed/);
  assert.equal(fs.readFileSync(path.join(owned,'mine.txt'),'utf8'),'keep');
- assert.equal(fs.existsSync(path.join(destination,'.agents/skills/xcode-project-dashboard')),false);
+ assert.equal(fs.existsSync(path.join(destination,'.agents/skills/cfa-architecture-review')),false);
 });
 
 test('upgrade retains a backup and preserves existing CFA policy',t=>{
@@ -90,5 +92,15 @@ test('symlink installation paths are rejected',t=>{
 test('CFA source and package outputs are deterministic',t=>{
  const {dir,source}=release(t);const second=stageRelease(path.join(dir,'second'));
  assert.deepEqual(inventory(source),inventory(second));
- assert.equal(hash(path.join(root,'architecture/cfa-specification.md')),hash(path.join(source,'skills/cfa-development/references/cfa-specification.md')));
+ assert.equal(hash(path.join(root,'architecture/cfa-specification.md')),hash(path.join(source,'skills/cfa-app-creation/references/cfa-specification.md')));
+});
+
+
+test('legacy standalone skill blocks a conflicting installation without deleting edits',t=>{
+ const {dir,source}=release(t);const destination=path.join(dir,'customer');
+ const old=path.join(destination,'.agents/skills/cfa-development');fs.mkdirSync(old,{recursive:true});
+ fs.writeFileSync(path.join(old,'SKILL.md'),'customer edits');
+ assert.throws(()=>install({source,destination,mode:'skills',replace:true}),/Legacy skill/);
+ assert.equal(fs.readFileSync(path.join(old,'SKILL.md'),'utf8'),'customer edits');
+ assert.equal(fs.existsSync(path.join(destination,'.agents/skills/cfa-app-creation')),false);
 });

@@ -45,7 +45,13 @@ export function install({source=path.resolve(path.dirname(fileURLToPath(import.m
   verify(source,json(checksums),['checksums.json']);
   const manifest=json(path.join(source,'.codex-plugin/plugin.json'));
   if(manifest.name!==NAME) throw Error('Unexpected plugin name.');
-  const destinations=mode==='plugin' ? [[source,path.join(destination,'plugins',NAME)]] : ['cfa-development','xcode-project-dashboard'].map(name=>[path.join(source,'skills',name),path.join(destination,'.agents/skills',name)]);
+  const destinations=mode==='plugin' ? [[source,path.join(destination,'plugins',NAME)]] : ['cfa-app-creation', 'cfa-architecture-adoption', 'swift-concurrency-migration', 'cfa-architecture-review'].map(name=>[path.join(source,'skills',name),path.join(destination,'.agents/skills',name)]);
+  if(mode==='skills') {
+    for(const legacy of ['cfa-development','xcode-project-dashboard']) {
+      const old=path.join(destination,'.agents/skills',legacy);
+      if(fs.existsSync(old)) throw Error(`Legacy skill ${legacy} is still installed. Move it outside .agents/skills, preserving edits, before installing the four new skills.`);
+    }
+  }
   let market,marketFile;
   if(mode==='plugin') {
     safeDirectories(destination,'.agents/plugins');
