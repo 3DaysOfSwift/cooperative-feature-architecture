@@ -143,6 +143,7 @@ Application
 ├── 3 - App Resources
 │   ├── Assets.xcassets
 │   ├── PrivacyInfo.xcprivacy
+│   ├── Purchases.storekit (when local StoreKit testing is used)
 │   └── Application.entitlements
 ├── 4 - Swift Extensions
 │   └── Type+Capability.swift
@@ -154,6 +155,11 @@ Application
 The Xcode navigator must communicate the design without requiring a developer
 to inspect source files.
 
+StoreKit test configuration files (`.storekit`) belong in `3 - App Resources`
+on disk and in the navigator, rather than loose at the project root. When
+creating or moving one, keep the scheme’s StoreKit configuration reference in
+sync. These development-only files should not be added to Copy Bundle Resources.
+
 ### Strict No File Dumping Policy
 
 Do not create vague dumping-ground folders such as `Helpers`, `Utilities`,
@@ -163,23 +169,29 @@ clarify its responsibility rather than hiding it inside a generic collection.
 
 ### Colour Theme
 
-Every iOS application requires a visual theme, even though most applications
-ship with only one. Define that theme explicitly in `AppColourTheme` and let
-`ThemeManager` own the selected theme and supply it consistently across every
-screen.
+Create a dedicated `ThemeManager.swift` alongside `AppColourTheme.swift` in
+`1 - View/Theme`. The application owns exactly one observable ThemeManager and
+supplies that same instance to every screen, scene, and presentation. Do not
+construct separate managers in individual screens or place this presentation
+state in AppModel.
 
-Create more than one colour theme during development, even when only one is
-intended to go live. Supporting another theme is an almost free user feature,
-but its greater architectural value is enforcement: every developer must use
-the selected theme instead of choosing colours independently inside Views. The
-team and its designers gain one reviewable palette file containing the intended
-values for the whole application.
+Provide at least two distinct, complete colour themes. ThemeManager owns the
+current selection and exposes its palette. Every screen and shared component
+uses that current palette for semantic colours: backgrounds, surfaces, text,
+secondary text, accents, button foregrounds, and feedback. Keep palette literals
+centralized. Deliberately fixed artwork colours can remain stable, but must not
+be used as a substitute for themed interface colours.
 
-This prevents scattered literals and subtly different versions of what should
-be the same colour. Keep `AppColourTheme` and `ThemeManager` inside `1 - View`
-because they control presentation rather than application behaviour. A theme
-may remain development-only; the discipline created by supporting it still
-improves the production code.
+Add a colour-theme selector to Settings. Changing it must update visible and
+subsequently presented screens immediately. Persist a stable theme identifier
+across launches, with a default fallback for a missing or obsolete identifier.
+Make system appearance, navigation, lists, text inputs, and sheets agree with
+the selected palette; do not force light mode for a dark theme. Declare any
+required privacy-manifest reason for the chosen preferences API.
+
+Verify both themes on the main user journey and in Settings, including contrast,
+selection persistence, and newly opened sheets. Keep the themes and manager in
+`1 - View`, because they own presentation rather than application behaviour.
 
 ### Swift Extensions
 
