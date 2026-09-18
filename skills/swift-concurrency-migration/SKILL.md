@@ -16,3 +16,7 @@ Keep migrated operations directly awaitable. Use structured child tasks for work
 Verify language mode, concurrency checking, default isolation and relevant SDK annotations instead of assuming async means off-main. Do not hide diagnostics with unjustified unchecked annotations. Preserve required ordering across suspension points and prevent obsolete results from overwriting newer state.
 
 Completion requires an updated primitive inventory, relevant build/tests and evidence that behaviour was preserved. Record remaining legacy mechanisms and why they remain. A pure GCD application is a valid starting point. No dashboard or CFA conversion is a prerequisite.
+
+## Shared Swift coding standards
+
+Read the [Swift coding guide](references/swift-coding-guide.md) before implementing or reviewing Swift. Apply its rules for crash safety, shared model decisions, declarative Views, KISS, errors, concurrency, responsiveness and verification within this workflow's authorized scope. Treat forced operations as explicit crash decisions; never infer permission to retain them merely because they appear safe. Read-only reviews report violations rather than editing code.

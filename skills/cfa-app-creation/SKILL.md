@@ -17,3 +17,7 @@ Read [CFA specification](references/cfa-specification.md) and [reference feature
 6. Build the iPhone target and exercise the first journey. Test meaningful business rules and ViewModel behaviour. Record unavailable simulator/device checks accurately.
 
 Deliver the Xcode project, a short explanation of feature ownership, and executed validation. Apply the specification’s review checklist to the created slice. Do not perform legacy migration as part of this skill.
+
+## Shared Swift coding standards
+
+Read the [Swift coding guide](references/swift-coding-guide.md) before implementing or reviewing Swift. Apply its rules for crash safety, shared model decisions, declarative Views, KISS, errors, concurrency, responsiveness and verification within this workflow's authorized scope. Treat forced operations as explicit crash decisions; never infer permission to retain them merely because they appear safe. Read-only reviews report violations rather than editing code.

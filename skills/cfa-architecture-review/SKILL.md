@@ -14,3 +14,7 @@ For a dashboard or detailed concurrency analysis, read the [dashboard workflow](
 A focused CFA review does not require an app-wide dashboard or numerical ratings. A requested full dashboard requires the complete source-evidence workflow. Do not infer testing evidence from source inspection or claim race freedom from a score.
 
 Deliver findings and verification limits. Keep generated reports outside app source. App changes, architecture adoption and concurrency migration require their own requested scope; this review does not authorize them.
+
+## Shared Swift coding standards
+
+Read the [Swift coding guide](references/swift-coding-guide.md) before implementing or reviewing Swift. Apply its rules for crash safety, shared model decisions, declarative Views, KISS, errors, concurrency, responsiveness and verification within this workflow's authorized scope. Treat forced operations as explicit crash decisions; never infer permission to retain them merely because they appear safe. Read-only reviews report violations rather than editing code.

@@ -14,6 +14,9 @@ export function validate(base=root,{source=true}={}) {
     const text=fs.readFileSync(path.join(skill,'SKILL.md'),'utf8');
     if(!text.startsWith('---\n') || !text.includes(`name: ${name}\n`) || !/^description: .+/m.test(text)) throw Error(`Invalid skill: ${name}`);
     if(text.includes('[TODO:')) throw Error(`Unfinished skill: ${name}`);
+    const guide = path.join(skill,'references/swift-coding-guide.md');
+    if (!fs.existsSync(guide) || !text.includes('(references/swift-coding-guide.md)')) throw Error(`Missing Swift coding guide: ${name}`);
+    if (source && hash(guide)!==hash(path.join(base,'architecture/swift-coding-guide.md'))) throw Error('Stale coding guide. Run npm run sync.');
     // Check actual Markdown file links throughout skill resources; examples/URLs are not opened.
     for(const relative of files(skill).filter(f=>f.endsWith('.md'))) {
       const file=path.join(skill,relative), content=fs.readFileSync(file,'utf8');

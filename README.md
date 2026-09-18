@@ -299,3 +299,7 @@ Preserve existing behaviour and report verification results and remaining gaps.
 The workflow changes code when requested. Architecture Review remains read-only.
 
 [Read the Codebase Tidy skill](skills/cfa-codebase-tidy/SKILL.md)
+
+## Swift coding guide
+
+Our shared [Swift coding guide](architecture/swift-coding-guide.md) defines the standards used by all five workflows. Extend the canonical guide as new principles are agreed; bundled copies are maintained by `npm run sync`.

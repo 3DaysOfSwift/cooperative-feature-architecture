@@ -26,6 +26,10 @@ of the application remains explicit and coordinated. The goal is to improve
 future code generation without sacrificing the readability and maintainability
 required by the people who will own the code afterwards.
 
+## Swift coding standards
+
+Read and apply the [Swift coding guide](swift-coding-guide.md). It defines the common rules for all toolkit workflows: deliberate crash decisions, target-independent model logic, declarative Views, simple design, honest errors, explicit concurrency, responsive loading and evidence-based testing. The guide is maintained alongside this specification and bundled with every skill.
+
 ## Project Identity
 
 For a new application, use the developer’s organisation prefix and a bundle-safe
@@ -159,6 +163,11 @@ StoreKit test configuration files (`.storekit`) belong in `3 - App Resources`
 on disk and in the navigator, rather than loose at the project root. When
 creating or moving one, keep the scheme’s StoreKit configuration reference in
 sync. These development-only files should not be added to Copy Bundle Resources.
+
+Independent reusable Views belong in their own clearly named files. Do not place
+unrelated components in another View’s file simply because they are small.
+Colocation is appropriate for private implementation details used only by that
+View, not independently reusable components.
 
 ### Strict No File Dumping Policy
 

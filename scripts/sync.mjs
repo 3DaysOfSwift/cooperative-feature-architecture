@@ -9,6 +9,7 @@ export function sync(base = root) {
     fs.mkdirSync(path.dirname(to),{recursive:true});
     fs.copyFileSync(from,to);
   };
+  for (const name of ['cfa-app-creation','cfa-architecture-adoption','cfa-architecture-review','cfa-codebase-tidy','swift-concurrency-migration']) copy('architecture/swift-coding-guide.md',`skills/${name}/references/swift-coding-guide.md`);
   for (const name of ['cfa-app-creation','cfa-architecture-adoption','cfa-architecture-review','cfa-codebase-tidy']) copy('architecture/cfa-specification.md',`skills/${name}/references/cfa-specification.md`);
   for (const name of ['cfa-app-creation','cfa-architecture-adoption']) copy('architecture/reference-feature.md',`skills/${name}/references/reference-feature.md`);
   for (const name of ['cfa-architecture-adoption','swift-concurrency-migration','cfa-codebase-tidy']) copy('architecture/product-behaviour-contract.md',`skills/${name}/references/product-behaviour-contract.md`);

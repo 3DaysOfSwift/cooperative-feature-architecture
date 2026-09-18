@@ -18,3 +18,7 @@ Read [CFA specification](references/cfa-specification.md), [reference feature](r
 Concurrency migration is a separate operation. Preserve current GCD/callback mechanisms during structural changes where possible. If a required CFA isolation boundary also needs concurrency changes outside the requested scope, identify that dependency and obtain scope clarification before proceeding with those changes. When both operations are requested, use distinct checkpoints and validation for each; do not silently turn architecture adoption into a whole-app concurrency rewrite.
 
 Deliver a before/after ownership map, behaviour evidence and any remaining migration ledger. Existing CFA feature enhancements may use the same rules at feature scope without restructuring the whole app.
+
+## Shared Swift coding standards
+
+Read the [Swift coding guide](references/swift-coding-guide.md) before implementing or reviewing Swift. Apply its rules for crash safety, shared model decisions, declarative Views, KISS, errors, concurrency, responsiveness and verification within this workflow's authorized scope. Treat forced operations as explicit crash decisions; never infer permission to retain them merely because they appear safe. Read-only reviews report violations rather than editing code.
