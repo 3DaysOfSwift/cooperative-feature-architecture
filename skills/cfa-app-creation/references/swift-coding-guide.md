@@ -136,6 +136,79 @@ Run focused tests, then the relevant wider suite and build. Source parsing is no
 
 **Review:** Can the evidence support the specific claim being made about correctness or readiness?
 
+## 9. SwiftData: one app-owned persistent store
+
+Use **one shared ModelContainer backed by one persistent SwiftData store per iOS app**, owned by the production
+AppModel composition root. Features keep their records in separate model types
+or logical collections inside that store. A feature boundary is not a database
+boundary. This is our architecture convention, not a limitation of SwiftData.
+
+- Create the store once and inject it into every persistent repository. Make
+  that dependency mandatory: no optional store arguments, hidden fallback
+  containers, or per-feature database files.
+- Keep schema, configuration, database location and lifetime in the model's
+  persistence layer. Views and ViewModels do not create or choose stores.
+- Multiple actor-owned contexts may use the same container. Keep each context
+  and its managed objects within its owner; pass Sendable values across actors.
+  A separate context does not require a separate persistent store.
+- Open lazily off MainActor and coalesce overlapping requests. Serialize
+  container creation across independent graphs where required to avoid the
+  observed Core Data initialization race. Do not serialize the entire test
+  suite or unrelated database operations as a workaround.
+- Each persistence test graph owns an isolated temporary store. Share it among
+  that graph's repositories, never across unrelated tests. Domain tests can use
+  in-memory repository doubles without constructing SwiftData containers.
+- Preserve the existing production store path and schema when refactoring
+  ownership. If multiple shipped stores really exist, migrate and verify their
+  data before removing anything; never silently discard user records.
+
+### Crash warning: overlapping container initialization
+
+Concurrent creation of independent `ModelContainer` instances for the same model
+type reproduced an intermittent **EXC_BAD_ACCESS / SIGSEGV process crash** in our
+standalone SwiftData investigation (macOS 26.0.1, Swift 6.2.3, September 2026).
+The containers used separate fresh SQLite files. The failing stack included
+Core Data's `_generateTriggerSQL`, `createTriggersForEntities:` and mutable
+Dictionary insertion during initial store creation, before any record writes.
+
+The evidence is consistent with a race involving shared framework metadata
+while containers initialize. The exact internal cause is not Apple-confirmed;
+we have not established which other OS versions, including iOS, are affected.
+Multiple containers are supported by SwiftData in general: their existence
+alone is not proof of a crash. **Overlapping initialization was the reproduced
+trigger.** A SIGSEGV cannot be recovered with Swift `do`/`catch`.
+
+**Primary prevention: do not create multiple containers in the live app graph.**
+Create one at the composition root and inject the same owner into every
+repository. A single database filename is not enough if each repository still
+constructs its own container. Separate models, collections and actor-owned
+contexts can share that one container.
+
+Hidden fallback constructors, repeated app graphs and parallel persistence tests
+can reintroduce overlapping initialization. Separate actors for separate stores
+only isolate each instance; they do not coordinate initialization across them.
+Likewise, a worker actor created after the container cannot protect its creation.
+
+When isolated test graphs legitimately need independent containers, route their
+creation through one shared off-main-actor opener, with no suspension during
+container creation. Coalesce concurrent opening requests within each store.
+Keep tests parallel and normal operations on their own worker actors. Moving
+creation into detached tasks alone does not prevent this race. Do not work
+around it by removing uniqueness constraints or migration/versioned schemas:
+those variants also crashed in the investigation.
+
+Serialized-opening controls and repeated parallel-suite runs passed without
+this crash; finite passing runs are evidence for the mitigation, not a guarantee
+against every framework failure. Preserve the reproducer and report any
+recurrence with the OS version, stack and opening pattern. Validate on the
+supported iOS runtime before release.
+
+During review, locate every container/store constructor and verify that only
+composition roots and the persistence factory create them. Test concurrent
+opening, failure recovery, collection isolation and persistence after reopening.
+Any exception to the one-store rule needs an explicit architectural reason and
+user agreement; adding a feature is not sufficient justification.
+
 ## Evolving this guide
 
 For each new principle, include the rule, reason, preferred approach, a small example when useful, and a review check. Cite official sources for language semantics. Distinguish our engineering preferences from language requirements. Keep this file canonical; update bundled skill copies through the toolkit's sync script.
