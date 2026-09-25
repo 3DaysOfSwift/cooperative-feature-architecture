@@ -1,6 +1,12 @@
-[![3 Days of Swift Concurrency — iOS developer training](readme-images/README-Logo-h512.png)](https://www.3daysofswiftconcurrency.com/)
+<p align="center">
+  <a href="https://github.com/3DaysOfSwift/cooperative-feature-architecture">
+    <img src="readme-images/CFA-Toolkit-AppIcon.png" width="320" alt="CFA Toolkit icon: modular features generating concurrent work">
+  </a>
+</p>
 
 # Cooperative Feature Architecture (CFA)
+
+*An AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency.*
 
 **[View the CFA Toolkit on GitHub](https://github.com/3DaysOfSwift/cooperative-feature-architecture)**
 
