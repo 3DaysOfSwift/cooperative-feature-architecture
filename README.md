@@ -12,6 +12,53 @@
 
 **Created and published by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/) — a free, open-source gift to the iOS development community.**
 
+## Try the CFA Toolkit: build your own app
+
+**Copy this prompt into your AI coding agent to see the toolkit in action.** Install the toolkit using the instructions below, or give your agent access to this repository and ask it to read the relevant `SKILL.md` files. A chat model without access to files and development tools can help plan the app, but cannot build and verify the Xcode project for you.
+
+```text
+Using the CFA Toolkit—the AI skills for creating, editing, tidying,
+migrating and testing modern iOS apps—build a new SwiftUI iPhone app.
+
+Read the toolkit's CFA App Creation skill and follow its architecture:
+https://github.com/3DaysOfSwift/cooperative-feature-architecture
+
+Use the open-source Trend app as a reference for project structure,
+feature ownership and separation of UI from testable business logic:
+https://github.com/3DaysOfSwift/Trend-iOS-App-Swift-Concurrency-CFA
+
+I do not want a weight tracker. Instead, build a daily-selfie photo app.
+Let me take a photo of myself each day, store it privately on my device,
+and browse my photos in date order. Let me choose a date range—such as
+one year—and generate and export a time-lapse video from those selfies.
+Keep the photos local; do not add an account, server or cloud upload.
+
+Start with a working capture, save and gallery journey, then add video
+generation. Handle camera permission, saving failures and days without
+a photo. Keep expensive image and video work off the UI's executor and
+give long-running work explicit ownership and cancellation behaviour.
+
+Keep it simple. Use a bespoke ViewModel for each View, feature managers
+for business behaviour and AppModel to assemble dependencies. Use Trend
+as an architectural example, not as an app to modify or copy wholesale.
+
+Write meaningful unit tests for feature behaviour and failure cases.
+Build and run the tests where tooling permits. Report what was verified
+and what still needs testing on a physical iPhone.
+```
+
+Change the app idea to your own. The toolkit supplies the architectural guidance; your prompt supplies the product you want to build.
+
+### More prompts to try
+
+- [Create a new app or its first feature](#skill-1--cfa-app-creation).
+- [Add a feature or adopt CFA in an existing app](#skill-2--cfa-architecture-adoption).
+- [Migrate GCD code to Swift Concurrency](#skill-3--swift-concurrency-migration).
+- [Review an app or generate its architecture dashboard](#skill-4--cfa-architecture-review).
+- [Tidy a CFA app or add meaningful unit tests](#maintain-an-existing-cfa-codebase).
+
+## The architecture at a glance
+
 - **Declarative SwiftUI Views.** Describe layout and presentation; keep imperative feature logic out of Views.
 - **A bespoke ViewModel for each View.** Each View has a tightly coupled, observable ViewModel for its presentation needs.
 - **One AppModel composition root.** Centralise dependency creation and inversion of control (IoC) in one assembly function.
@@ -303,6 +350,25 @@ Preserve existing behaviour and report verification results and remaining gaps.
 ```
 
 The workflow changes code when requested. Architecture Review remains read-only.
+
+**Find and fill meaningful unit-test gaps**
+
+```text
+Use $cfa-codebase-tidy to review and improve this CFA app's unit tests.
+Map the public behaviour of each feature and ViewModel to the assertions
+that protect it. Add missing tests for success, invalid input, failure,
+retry, cancellation and overlapping requests where those cases apply.
+
+Give each ViewModel its own test file. Use isolated dependencies and
+controllable asynchronous work rather than real purchases or servers.
+Test behaviour, not merely whether a stored property keeps its value.
+Preserve production behaviour and do not delete existing tests without
+explaining why they provide no useful protection.
+
+Run the relevant tests and report passing, failing and unexecuted tests
+separately, together with any remaining scenario gaps. Do not equate a
+green test run with complete test coverage.
+```
 
 [Read the Codebase Tidy skill](skills/cfa-codebase-tidy/SKILL.md)
 
