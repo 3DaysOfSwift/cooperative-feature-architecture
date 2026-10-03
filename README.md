@@ -196,17 +196,40 @@ still does what the original app did.
 
 ## Xcode Project Dashboard
 
-Run the dashboard against a Swift Concurrency project when you want a visual
-report of the code that exists today:
+The easiest way to create a dashboard is to ask your AI coding tool:
 
-```sh
-node skills/cfa-architecture-review/scripts/dashboard/src/cli.mjs /path/to/app --out /path/to/new-report
+```text
+Using CFA, analyse my Xcode project and produce a dashboard.
 ```
 
-The dashboard runs locally. It does not edit your application. It can show where
-Tasks are created, whether a root Task is tracked, possible suspension points,
-architecture observations and imported test results. It links findings back to
-the source code so you can inspect the evidence.
+The CFA Architecture Review skill tells the AI how to inspect the project, run
+the dashboard and explain the report. The dashboard runs locally and does not
+edit your application.
+
+If you prefer Terminal, the CFA installer adds a short command:
+
+```sh
+cd /path/to/your-xcode-project
+cfa dashboard
+```
+
+It scans the current folder and creates a new timestamped dashboard folder
+inside it. To analyse another project, give its folder path:
+
+```sh
+cfa dashboard /path/to/your-xcode-project
+```
+
+The installer places `cfa` in `~/.local/bin`. If Terminal says `command not
+found: cfa`, add that folder to your zsh path once, then open a new Terminal:
+
+```sh
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zprofile
+```
+
+The dashboard can show where Tasks are created, whether a root Task is tracked,
+possible suspension points, architecture observations and imported test results.
+It links findings back to the source code so you can inspect the evidence.
 
 It cannot prove that an app has no race conditions. An AI reviewer must inspect
 the relevant source, and the app still needs builds, tests and manual checks.

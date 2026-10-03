@@ -28,7 +28,21 @@ The installer verifies the package checksum inventory, copies the complete plugi
 `~/plugins/cooperative-feature-architecture`, preserves/extends your personal
 `~/.agents/plugins/marketplace.json`, and runs `codex plugin add` using the actual
 marketplace name. No custom marketplace registration is required for this default
-personal location. No source app is changed and no software is downloaded.
+personal location. It also adds a `cfa` Terminal command in `~/.local/bin`. No
+source app is changed and no software is downloaded.
+
+After installation, you can generate a dashboard for the Xcode project in your
+current Terminal folder with:
+
+```sh
+cfa dashboard
+```
+
+If `cfa` is not found, add its folder to zsh's path once and open a new Terminal:
+
+```sh
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zprofile
+```
 
 If `codex` is not on PATH, pass its executable explicitly:
 

@@ -30,6 +30,10 @@ test('standalone release carries scanner dependencies and scans outside the sour
  assert.equal(execution.status,0,execution.stderr);
  assert.ok(fs.existsSync(path.join(report,'report.html')));
  assert.equal(json(path.join(report,'report.json')).scope.fileCount,1);
+ assert.ok(fs.existsSync(result.command));
+ const command=spawnSync(result.command,['dashboard',fixture],{cwd:dir,encoding:'utf8'});
+ assert.equal(command.status,0,command.stderr);
+ assert.equal(fs.readdirSync(fixture).filter(name=>name.startsWith('cfa-dashboard-')).length,1);
  assert.equal(fs.readFileSync(path.join(fixture,'Feature.swift'),'utf8'),'actor Feature { func refresh() async { await Task.yield() } }');
 });
 
