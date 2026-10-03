@@ -2,7 +2,7 @@
 
 Our working principles for readable, dependable Swift. This is a living guide: add rules when they solve a demonstrated problem, explain their purpose, and keep examples small. It applies to first-party source and tests across the CFA toolkit. It is an engineering standard, not a claim that Swift itself forbids these constructs.
 
-Creation follows these rules from the start. Adoption, migration and tidying apply them within the requested scope. Read-only reviews report violations and suggested corrections without editing code. Preserve existing architecture during concurrency-only migration; shared model rules do not require adopting CFA type names.
+Creation follows these rules from the start. Adoption, Legacy GCD migration and tidying apply them within the requested scope. Read-only reviews report violations and suggested corrections without editing code. Legacy GCD migration adopts CFA while preserving product behaviour; it does not mechanically replace GCD syntax or preserve an unclear ownership model.
 
 ## 1. Force unwrapping means choosing a crash
 

@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { inventory, verify, json, writeJSON, files } from './files.mjs';
+import { skills } from './sync.mjs';
 
 const NAME='cooperative-feature-architecture';
 const RECEIPT='.cfa-receipt.json';
@@ -34,7 +35,7 @@ function atomicJSON(file,value) {
   const tmp=file+`.${crypto.randomUUID()}.tmp`;
   try {writeJSON(tmp,value);fs.renameSync(tmp,file);} finally {if(fs.existsSync(tmp))fs.unlinkSync(tmp);}
 }
-export function install({source=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),destination=os.homedir(),mode='plugin',replace=false,stageOnly=false,codex='codex',execute=runCodex}={}) {
+export function install({source=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),destination=os.homedir(),mode='plugin',replace=false,stageOnly=false,codex='codex',skillsDirectory,execute=runCodex}={}) {
   if(Number(process.versions.node.split('.')[0])<20) throw Error('Node.js 20 or newer is required.');
   if(!['plugin','skills'].includes(mode)) throw Error('Mode must be plugin or skills.');
   if(stageOnly && mode!=='plugin') throw Error('--stage-only applies only to plugins.');
@@ -45,11 +46,12 @@ export function install({source=path.resolve(path.dirname(fileURLToPath(import.m
   verify(source,json(checksums),['checksums.json']);
   const manifest=json(path.join(source,'.codex-plugin/plugin.json'));
   if(manifest.name!==NAME) throw Error('Unexpected plugin name.');
-  const destinations=mode==='plugin' ? [[source,path.join(destination,'plugins',NAME)]] : ['cfa-app-creation', 'cfa-architecture-adoption', 'swift-concurrency-migration', 'cfa-architecture-review', 'cfa-codebase-tidy'].map(name=>[path.join(source,'skills',name),path.join(destination,'.agents/skills',name)]);
+  const standaloneDirectory=skillsDirectory ? path.resolve(skillsDirectory) : path.join(destination,'.agents/skills');
+  const destinations=mode==='plugin' ? [[source,path.join(destination,'plugins',NAME)]] : skills.map(name=>[path.join(source,'skills',name),path.join(standaloneDirectory,name)]);
   if(mode==='skills') {
     for(const legacy of ['cfa-development','xcode-project-dashboard']) {
-      const old=path.join(destination,'.agents/skills',legacy);
-      if(fs.existsSync(old)) throw Error(`Legacy skill ${legacy} is still installed. Move it outside .agents/skills, preserving edits, before installing the five skills.`);
+      const old=path.join(standaloneDirectory,legacy);
+      if(fs.existsSync(old)) throw Error(`Legacy skill ${legacy} is still installed. Move it outside the skill directory, preserving edits, before installing CFA.`);
     }
   }
   let market,marketFile;
@@ -104,17 +106,17 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1]
   try {
     const options={};const args=process.argv.slice(2);
     if(args.includes('--help')) {
-      console.log('CFA installer (Node.js 20+)\nnode scripts/install.mjs [--mode plugin|skills] [--replace] [--codex executable]\nTesting/offline staging: --destination directory --stage-only\nDefaults to the current user’s personal plugin marketplace. No administrator rights or downloads.\nExisting installations are never replaced unless --replace is given; edited files are always protected.');
+      console.log('CFA installer (Node.js 20+)\nnode scripts/install.mjs [--mode plugin|skills] [--replace] [--codex executable] [--skills-directory directory]\nTesting/offline staging: --destination directory --stage-only\nPlugin mode installs for Codex. Skills mode copies portable skill folders to ~/.agents/skills, or the explicit --skills-directory.\nExisting installations are never replaced unless --replace is given; edited files are always protected.');
     } else {
       while(args.length) {
         const flag=args.shift();
         if(flag==='--replace') options.replace=true;
         else if(flag==='--stage-only')options.stageOnly=true;
-        else if(['--mode','--destination','--codex'].includes(flag)&&args[0]&&!args[0].startsWith('--'))options[flag.slice(2)]=args.shift();
+        else if(['--mode','--destination','--codex','--skills-directory'].includes(flag)&&args[0]&&!args[0].startsWith('--'))options[flag.slice(2).replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase())]=args.shift();
         else throw Error(`Unknown or incomplete option: ${flag}`);
       }
       const result=install(options);console.log(JSON.stringify(result,null,2));
-      console.log(result.status==='installed'?'Installation complete. Open a new conversation to use the skills.':'Package staged; Codex activation was not attempted.');
+      console.log(result.status==='installed'?'Installation complete. Open a new conversation, then ask: I have installed the CFA Toolkit for iOS. Do you have access to create and maintain iOS projects with CFA?':'Package staged; Codex activation was not attempted.');
     }
   } catch(error){console.error(error.message);process.exitCode=1;}
 }

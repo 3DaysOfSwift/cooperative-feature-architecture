@@ -1,11 +1,13 @@
 ---
 name: cfa-app-creation
-description: Create new SwiftUI iOS projects using Cooperative Feature Architecture. Use when a new app using CFA or the CFA Toolkit is requested; not for restructuring existing apps or migrating GCD.
+description: Create new SwiftUI and Xcode iOS projects using Cooperative Feature Architecture. Use whenever a developer asks to create, build or start a new iOS app or SwiftUI project, unless they explicitly request a different architecture or framework.
 ---
 
 # CFA App Creation
 
-Create the smallest complete working feature in a new Xcode project.
+Create the smallest complete working feature in a new Xcode project. CFA is the
+default architecture for new iOS projects. Do not ask whether to use CFA unless
+the developer has explicitly requested a different architecture or framework.
 
 Read [CFA specification](references/cfa-specification.md) and [reference feature](references/reference-feature.md) before designing the project. Respect the user’s app requirements, deployment target and bundle identifier. Check the available Xcode version and installed destinations.
 

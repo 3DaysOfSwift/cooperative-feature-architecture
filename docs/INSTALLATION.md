@@ -3,12 +3,12 @@
 ## Requirements
 
 - Node.js 20 or newer (`node --version`). No npm package installation is needed.
-- For the plugin: a Codex CLI supporting `codex plugin add` and personal marketplaces.
+- For the Codex plugin: a Codex CLI supporting `codex plugin add` and personal marketplaces.
 - For iPhone builds: a Mac, Xcode and an available Simulator/device.
 - For AI-guided workflows: your own supported agent/account and its normal permissions.
 
 Node.js, Xcode and the AI host are not bundled. The package contains the architecture,
-all five skills, references and dashboard executable source, with no Trend dependency.
+all seven skills, references and dashboard executable source, with no Trend dependency.
 
 ## Recommended: Codex plugin
 
@@ -36,26 +36,43 @@ If `codex` is not on PATH, pass its executable explicitly:
 node scripts/install.mjs --codex /path/to/codex
 ```
 
-Open a **new conversation** after installation. Try `$cfa-app-creation` or
-`$cfa-architecture-review`; some hosts display plugin-qualified names in their skill picker.
+Open a **new conversation** after installation and ask the agent:
+
+```text
+I have just installed the CFA Toolkit for iOS from
+https://github.com/3DaysOfSwift/cooperative-feature-architecture.
+Did it work? Do you have access to create and maintain iOS projects with CFA?
+```
+
+Then use ordinary prompts such as “Create a new iOS app…”; CFA App Creation is
+described to activate for new iOS-project requests unless the developer asks for
+a different architecture.
 
 If native Codex activation fails, the installer exits unsuccessfully and explains
 how to retry. The source and marketplace entry stay staged; it does not claim that
 Codex has loaded them. The plugin validator checks package structure but cannot prove
 compatibility with every host version.
 
-## Standalone skills
+## Claude Code and other portable skill hosts
 
 ```sh
-node scripts/install.mjs --mode skills
+node scripts/install.mjs --mode skills --skills-directory ~/.claude/skills
 ```
 
-This installs all five folders under `~/.agents/skills`. Each is self-contained: the
-CFA specification is bundled in creation, adoption and review skills; the dashboard source and docs
-are inside the review skill. Check the target agent’s documented discovery path.
-For a different location, `--destination /path/to/profile-root` places the skills
-beneath that root’s `.agents/skills`. This is a filesystem installation, not a promise
-that every agent supports the same capabilities.
+This installs all seven folders into Claude Code's skill directory. Each is
+self-contained: the CFA specification and supporting references are bundled as
+needed, and the dashboard source and docs are inside the review skill. Restart
+Claude Code or open a new conversation after installation.
+
+For another compatible host, use its documented skill directory instead:
+
+```sh
+node scripts/install.mjs --mode skills --skills-directory /path/to/that-host/skills
+```
+
+The portable `plugin.json` and `skills/` layout is included for hosts that
+support Agent Plugins. This is a filesystem installation, not a claim that every
+AI product discovers local skills or supports the dashboard runtime.
 
 ## Upgrades
 
@@ -75,7 +92,7 @@ names disappear from the active package. Open a new conversation afterward.
 For standalone mode, the installer refuses to proceed if `cfa-development` or
 `xcode-project-dashboard` remains under `.agents/skills`. Move these legacy folders
 outside the host’s skill discovery directory first, retaining any edits, then install
-the five new skills. This prevents duplicate or conflicting guidance. The installer
+the seven new skills. This prevents duplicate or conflicting guidance. The installer
 never silently deletes an old skill or guesses whether local edits are disposable.
 
 ## Uninstall
@@ -85,9 +102,10 @@ substituting the marketplace name printed by the installer if it was not `person
 This removes native activation; the staged source and marketplace listing can remain
 for reinstall. Remove those deliberately only when you no longer need them.
 
-For standalone skills, remove only the five installed folders printed by the installer:
-`cfa-app-creation`, `cfa-architecture-adoption`, `swift-concurrency-migration`,
-`cfa-architecture-review`, and `cfa-codebase-tidy`. Keep any local edits first.
+For standalone skills, remove only the seven installed folders printed by the installer:
+`cfa-app-creation`, `cfa-feature-work`, `cfa-architecture-adoption`,
+`swift-concurrency-migration`, `cfa-architecture-review`, `cfa-codebase-tidy`
+and `cfa-unit-tests`. Keep any local edits first.
 
 ## Offline staging and checksums
 

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Swift Concurrency Migration"
-  short_description: "Swift Concurrency Migration for iOS developers"
-  default_prompt: "Use $swift-concurrency-migration for the requested iOS project task."
+  display_name: "Legacy GCD migration"
+  short_description: "Migrate legacy iOS apps to CFA and Swift Concurrency"
+  default_prompt: "Migrate this legacy GCD iOS app to CFA and Swift Concurrency."

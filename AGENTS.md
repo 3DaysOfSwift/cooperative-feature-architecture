@@ -9,9 +9,12 @@ The public project identity is Cooperative Feature Architecture (CFA). Use the s
 “An AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency.” AppModel is
 the composition-root type, not the public product name. Respect a customer's bundle prefix.
 
-Keep five independent workflows: app creation, architecture adoption, concurrency
-migration, read-only architecture review, and iterative CFA codebase tidying. Concurrency migration does not imply CFA
-adoption; the dashboard is a tool used by review. Preserve user intent and existing app behaviour.
+Keep seven independent workflows: app creation, CFA feature work, architecture
+adoption, Legacy GCD migration, read-only architecture review, iterative CFA
+codebase tidying, and CFA unit tests. Legacy GCD migration adopts CFA while
+preserving product behaviour; it is not a superficial syntax rewrite. The
+dashboard is a tool used by review. Preserve user intent and existing app
+behaviour.
 
 Run `npm test`, `npm run validate`, and `python3 scripts/release.py` for release changes.
 All runtime dependencies must be packaged or stated as prerequisites. Test installation

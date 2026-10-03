@@ -16,7 +16,7 @@ test('standalone release carries scanner dependencies and scans outside the sour
  const {dir,source}=release(t); const destination=path.join(dir,'customer');
  const result=install({source,destination,mode:'skills'});
  assert.equal(result.status,'installed');
- assert.equal(result.paths.length,5);
+ assert.equal(result.paths.length,7);
  for(const installed of result.paths) assert.ok(fs.existsSync(path.join(installed,'SKILL.md')));
  const tidy=path.join(destination,'.agents/skills/cfa-codebase-tidy');
  assert.ok(result.paths.includes(tidy));
@@ -31,6 +31,17 @@ test('standalone release carries scanner dependencies and scans outside the sour
  assert.ok(fs.existsSync(path.join(report,'report.html')));
  assert.equal(json(path.join(report,'report.json')).scope.fileCount,1);
  assert.equal(fs.readFileSync(path.join(fixture,'Feature.swift'),'utf8'),'actor Feature { func refresh() async { await Task.yield() } }');
+});
+
+test('portable installation accepts an explicit host skill directory',t=>{
+ const {dir,source}=release(t); const destination=path.join(dir,'customer');
+ const skillsDirectory=path.join(destination,'.claude','skills');
+ const result=install({source,destination,mode:'skills',skillsDirectory});
+ assert.equal(result.paths.length,7);
+ assert.ok(result.paths.every(item=>item.startsWith(skillsDirectory+path.sep)));
+ assert.ok(fs.existsSync(path.join(skillsDirectory,'cfa-feature-work','SKILL.md')));
+ assert.ok(fs.existsSync(path.join(skillsDirectory,'cfa-unit-tests','SKILL.md')));
+ assert.equal(fs.existsSync(path.join(destination,'.agents','skills')),false);
 });
 
 test('plugin staging preserves unrelated marketplace configuration and names',t=>{

@@ -1,11 +1,14 @@
-# Swift Concurrency migration workflow
+# Legacy GCD migration workflow
 
-Preserve existing architecture. Begin at an operation boundary with known behaviour.
+Adopt CFA while preserving product behaviour. Begin at an operation boundary with known behaviour.
 
 ## Preserve concurrency guarantees
 
-Begin concurrency migration below the View layer. Ignore SwiftUI integration
-until the Model exposes useful, directly testable asynchronous functions.
+First establish the CFA boundary for one complete feature: a bespoke ViewModel
+for each View, a feature manager for business decisions and AppModel for
+composition. Then migrate asynchronous model work below the View layer. Keep
+SwiftUI declarative until the Model exposes useful, directly testable async
+functions.
 
 Inventory every queue, group, barrier, semaphore, callback, delegate, and
 operation. For each one, determine:
@@ -83,4 +86,3 @@ understood; concurrency diagnostics are resolved; task lifetimes are verified;
 and representative runtime evidence supports the application's responsiveness
 and timing requirements. Missing profiling or device access remains an explicit
 verification gap—not a claim that the app never blocks the main thread.
-

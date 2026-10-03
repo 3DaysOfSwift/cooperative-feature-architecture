@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cooperative-feature-architecture",
+  "version": "0.2.0-beta.2",
+  "description": "AI-assisted iOS architecture toolkit for SwiftUI and Swift Concurrency.",
+  "author": {
+    "name": "3 Days of Swift Concurrency",
+    "url": "https://www.3daysofswiftconcurrency.com/"
+  },
+  "homepage": "https://github.com/3DaysOfSwift/cooperative-feature-architecture",
+  "repository": "https://github.com/3DaysOfSwift/cooperative-feature-architecture",
+  "license": "MIT",
+  "keywords": ["swift", "swiftui", "ios", "swift-concurrency", "architecture", "cfa"]
+}

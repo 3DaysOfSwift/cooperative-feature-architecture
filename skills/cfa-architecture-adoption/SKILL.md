@@ -15,7 +15,12 @@ Read [CFA specification](references/cfa-specification.md), [reference feature](r
 4. Migrate one end-to-end feature at a time, checking callers and live wiring. Keep data formats, navigation, errors, ordering and operation lifetimes stable. Remove superseded wiring only once all callers have moved.
 5. Build and run relevant regression checks at each meaningful boundary. Compare final ownership against the specification’s review checklist and explain any remaining transitional components.
 
-Concurrency migration is a separate operation. Preserve current GCD/callback mechanisms during structural changes where possible. If a required CFA isolation boundary also needs concurrency changes outside the requested scope, identify that dependency and obtain scope clarification before proceeding with those changes. When both operations are requested, use distinct checkpoints and validation for each; do not silently turn architecture adoption into a whole-app concurrency rewrite.
+Use this workflow for an architecture-only adoption when the application is
+already modern or the developer has explicitly limited the scope to structure.
+For a legacy GCD, OperationQueue or callback-based application, use **Legacy
+GCD migration**: it establishes CFA ownership and migrates concurrency in
+separate, verified feature checkpoints. Do not silently perform a whole-app
+concurrency rewrite during a narrowly requested architecture-only adoption.
 
 Deliver a before/after ownership map, behaviour evidence and any remaining migration ledger. Existing CFA feature enhancements may use the same rules at feature scope without restructuring the whole app.
 

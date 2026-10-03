@@ -109,7 +109,7 @@ behaviour.
 Automated tests cannot capture every interaction, visual transition, system
 integration, timing condition, or undocumented expectation. The testing team
 must run the agreed manual regression suite after the architecture milestone
-and again after the Swift Concurrency migration. Include real-device and
+and again after the Legacy GCD migration. Include real-device and
 critical integration testing when the product requires it.
 
 Record the tester, date, build, environment, result, and any linked defect for
