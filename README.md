@@ -6,11 +6,58 @@
 
 # Cooperative Feature Architecture (CFA)
 
-**CFA is a free toolkit of AI skills for building, changing, testing, migrating
-and reviewing SwiftUI applications that use Swift Concurrency.**
+**CFA is a modern iOS app architecture for commercial Xcode projects.** It was
+created by iOS developers with 17 years of experience building, publishing
+and maintaining iOS applications. CFA gives SwiftUI, ViewModels, Feature
+Managers, repositories and Swift Concurrency clear responsibilities, so a team
+can build faster and maintain the result with confidence.
 
-It gives your AI coding tool a clear structure for an iOS project, so the code
-it writes is easier to find, understand and maintain.
+Its structure is visible in Xcode from the first day. This shortened map uses
+[Trend](https://github.com/3DaysOfSwift/Trend-iOS-App-Swift-Concurrency-CFA) as
+an example and expands its feature area:
+
+```text
+Application
+├── 1 - View
+├── 2 - AppModel
+│   ├── AppModel.swift
+│   └── Features
+│       ├── Habits
+│       │   ├── HabitsManager.swift
+│       │   └── HabitsWorker.swift
+│       ├── WeightLog
+│       │   ├── WeightLogManager.swift
+│       │   └── WeightEntry.swift
+│       ├── Progress
+│       │   └── ProgressManager.swift
+│       ├── Purchases
+│       │   └── PurchaseManager.swift
+│       ├── Settings
+│       │   └── SettingsManager.swift
+│       └── Backup
+│           └── BackupManager.swift
+├── 3 - App Resources
+└── 4 - Swift Extensions
+```
+
+Each feature has one named folder. Its Feature Manager, feature-owned values
+and supporting workers live together inside that folder instead of being spread
+across unrelated areas of the Xcode project.
+
+CFA is presented as a candidate for the lasting default architecture for
+mainstream iOS development. The iOS industry needs more templates for scalable,
+commercial Xcode projects, and this is one. CFA follows strict KISS principles,
+provides guidance for AI-written code, has fewer moving parts, and gives a
+developer a visible path from SwiftUI to each implemented feature and the shared
+state it owns.
+
+# Toolkit - 7 AI Skills + 1 Dashboard
+
+**The CFA Toolkit is a free, open-source collection of seven AI skills and one
+tool.** It teaches an AI coding tool how to create, change, tidy, test, migrate
+and review an iOS project using the CFA architecture. The skills give the AI a
+clear blueprint to follow, which makes AI-driven development more consistent
+and produces a more professional Xcode project from the first feature onward.
 
 <p align="left">
   <a href="https://github.com/3DaysOfSwift/cooperative-feature-architecture">
@@ -20,26 +67,26 @@ it writes is easier to find, understand and maintain.
 Created by [3DaysOfSwiftConcurrency.com](https://www.3daysofswiftconcurrency.com/)
 and released under the [MIT licence](LICENSE).
 
-## Install CFA once
+## Install the CFA Toolkit once
 
 An AI skill is a small folder of instructions for an AI coding tool. Installing
-CFA copies its seven skill folders into the place where your coding tool looks
-for skills on your computer. When you later ask your AI to create an iOS app,
-it can read the CFA instructions and use the CFA structure.
+the CFA Toolkit copies its seven skill folders into the place where your coding
+tool looks for skills on your computer. When you later ask your AI to create an
+iOS app, it can read the CFA architecture instructions and use CFA.
 
 The installation does not change Xcode or your existing apps. It only makes the
-CFA instructions available to your AI coding tool.
+CFA Toolkit instructions available to your AI coding tool.
 
 ### Codex
 
-Download and extract the CFA plugin release. In Terminal, change into the
+Download and extract the CFA Toolkit plugin release. In Terminal, change into the
 extracted folder and run:
 
 ```sh
 node scripts/install.mjs
 ```
 
-This installs CFA into your personal Codex marketplace. Open a **new** Codex
+This installs the CFA Toolkit into your personal Codex marketplace. Open a **new** Codex
 conversation and paste this message:
 
 ```text
@@ -48,15 +95,15 @@ https://github.com/3DaysOfSwift/cooperative-feature-architecture.
 Do you have access to create and maintain iOS projects with CFA?
 ```
 
-Codex should confirm that it can see the CFA skills. From that point, ordinary
-requests such as “Create a new iOS app…” can use CFA without you having to paste
-the architecture rules into every prompt.
+Codex should confirm that it can see the CFA Toolkit skills. From that point,
+ordinary requests such as “Create a new iOS app…” can use the CFA architecture
+without you having to paste its rules into every prompt.
 
 ### Claude Code and other AI coding tools
 
-The portable CFA skills are in the repository’s `skills` folder. Copy all seven
-folders inside it, without renaming them, into the folder where your AI coding
-tool reads skills.
+The portable CFA Toolkit skills are in the repository’s `skills` folder. Copy
+all seven folders inside it, without renaming them, into the folder where your
+AI coding tool reads skills.
 
 For Claude Code, that folder is commonly `~/.claude/skills`. This command copies
 the skills there for you:
@@ -93,7 +140,7 @@ say “Using CFA” or name the relevant skill from the list below.
 
 ## CFA Toolkit skills
 
-CFA contains seven AI skills and one local analysis tool.
+The CFA Toolkit contains seven AI skills and one local analysis tool.
 
 | Skill | Use it when you want to… |
 | --- | --- |
@@ -125,9 +172,10 @@ The path through one feature is:
 View → dedicated ViewModel → Feature API → Feature Manager → Repository
 ```
 
-Here is a small example of the CFA Xcode folder structure. Every feature has
-its own View, ViewModel and feature code, so a developer can follow one feature
-without searching through unrelated files.
+Here is a CFA folder map based on
+[Trend’s](https://github.com/3DaysOfSwift/Trend-iOS-App-Swift-Concurrency-CFA)
+features. Every feature has its own View, ViewModel and feature code, so a
+developer can follow one feature without searching through unrelated files.
 
 ```text
 Application
@@ -137,31 +185,35 @@ Application
 │   │   ├── AppColourTheme.swift
 │   │   └── ThemeManager.swift
 │   └── Views
-│       └── Parking
-│           ├── ParkingView.swift
-│           └── ParkingViewModel.swift
+│       └── Today
+│           ├── TodayView.swift
+│           └── TodayViewModel.swift
 ├── 2 - AppModel
 │   ├── AppModel.swift
 │   ├── Features
-│   │   └── Parking
-│   │       ├── ParkingAPI.swift
-│   │       ├── ParkingManager.swift
-│   │       └── ParkingSpot.swift
+│   │   ├── Habits
+│   │   │   ├── HabitsManager.swift
+│   │   │   └── HabitsWorker.swift
+│   │   ├── WeightLog
+│   │   │   ├── WeightLogManager.swift
+│   │   │   └── WeightEntry.swift
+│   │   └── Progress
+│   │       └── ProgressManager.swift
 │   └── User Data Storage
 │       ├── Protocols
-│       │   └── ParkingRepository.swift
+│       │   └── WeightRepository.swift
 │       └── Local
-│           └── FileParkingRepository.swift
+│           └── LocalDataStore.swift
 ├── 3 - App Resources
 │   ├── Assets.xcassets
 │   └── PrivacyInfo.xcprivacy
 ├── 4 - Swift Extensions
-│   └── Date+ParkingDay.swift
+│   └── Date+Day.swift
 └── ApplicationTests
     ├── ViewModelTests
-    │   └── ParkingViewModelTests.swift
+    │   └── TodayViewModelTests.swift
     └── FeatureTests
-        └── ParkingManagerTests.swift
+        └── WeightLogManagerTests.swift
 ```
 
 `AppModel.shared` is the app’s composition root. It builds the real objects the
@@ -172,7 +224,7 @@ and simply reflects its ViewModel.
 Read the full [CFA specification](architecture/cfa-specification.md) and
 [Swift coding guide](architecture/swift-coding-guide.md) for the complete rules.
 
-## What CFA helps your AI do
+## What the CFA Toolkit helps your AI do
 
 - Create a commercially structured SwiftUI project instead of a pile of files.
 - Keep business decisions out of SwiftUI Views.
@@ -247,7 +299,7 @@ These open-source iOS projects show CFA in use:
 See [Apps Made with CFA](docs/APPS-MADE-WITH-CFA.md) to learn what each project
 demonstrates.
 
-## Build CFA from source
+## Build the CFA Toolkit from source
 
 If you are contributing to the toolkit itself, run these commands from a source
 checkout:
@@ -274,5 +326,5 @@ the [validation record](docs/VALIDATION.md) and [Privacy](docs/PRIVACY.md).
 </p>
 Copyright © 2026 [3 Days of Swift Concurrency](https://www.3daysofswiftconcurrency.com/).
 
-You may use, copy, change and share CFA, including in commercial work, under the
-[MIT licence](LICENSE).
+You may use, copy, change and share the CFA architecture and CFA Toolkit,
+including in commercial work, under the [MIT licence](LICENSE).
