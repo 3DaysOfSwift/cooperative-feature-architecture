@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Cooperative Feature Architecture",
     "shortDescription": "AI-assisted SwiftUI architecture and migration",
-    "longDescription": "Seven focused skills for CFA app creation, feature work, architecture adoption, Legacy GCD migration, read-only architecture review, codebase tidying and unit tests. Includes a local evidence dashboard. Created by 3DaysOfSwiftConcurrency.com.",
+    "longDescription": "Eight skills for CFA app creation, feature work, architecture adoption, Legacy GCD migration, read-only architecture review, codebase tidying, unit tests and Swift code quality. Includes a local evidence dashboard. Created by 3DaysOfSwiftConcurrency.com.",
     "developerName": "3 Days of Swift Concurrency",
     "category": "Productivity",
     "capabilities": [

@@ -5,7 +5,7 @@ description: Iteratively tidy an existing CFA SwiftUI codebase for educational r
 
 # CFA codebase tidy
 
-Read the project's AGENTS.md and the bundled [CFA specification](references/cfa-specification.md). Preserve the [product behaviour contract](references/product-behaviour-contract.md). This workflow refines an existing CFA architecture; do not invent a new application framework. Use architecture adoption for adopting CFA and read-only architecture review when changes are not requested.
+Read the project's AGENTS.md, the bundled [CFA specification](references/cfa-specification.md) and [CFA change gate](references/cfa-change-gate.md). Preserve the [product behaviour contract](references/product-behaviour-contract.md). This workflow refines an existing CFA architecture; do not invent a new application framework. Use architecture adoption for adopting CFA and read-only architecture review when changes are not requested.
 
 ## Iteration contract
 

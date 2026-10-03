@@ -43,8 +43,8 @@ def main():
     run(args.node, 'scripts/build.mjs', str(package))
     plugin_zip = out / f'{name}-{version}-plugin.zip'
     archive(plugin_zip, [(p.relative_to(package).as_posix(), p) for p in package.rglob('*') if p.is_file()], name)
-    allowed = ['.codex-plugin', '.github', 'readme-images', 'architecture', 'skills', 'tools', 'scripts', 'test', 'examples', 'docs',
-               'README.md', 'LICENSE', 'CHANGELOG.md', 'CONTRIBUTING.md', 'AGENTS.md', '.gitignore', 'Install.command', 'package.json', 'plugin.json']
+    allowed = ['.codex-plugin', '.github', 'readme-images', 'architecture', 'skills', 'tools', 'scripts', 'test', 'examples', 'templates', 'docs',
+               'README.md', 'LICENSE', 'CHANGELOG.md', 'CONTRIBUTING.md', 'AGENTS.md', '.gitignore', 'Install.command', 'Install Xcode Template.command', 'package.json', 'plugin.json']
     sources = []
     for part in allowed:
         path = ROOT / part

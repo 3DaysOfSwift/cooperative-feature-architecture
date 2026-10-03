@@ -8,7 +8,7 @@ description: Legacy GCD migration: migrate GCD, OperationQueue and callback-base
 Migrate a legacy application into CFA and Swift Concurrency by preserving its
 product behaviour, not translating concurrency syntax.
 
-Read [CFA specification](references/cfa-specification.md), [reference feature](references/reference-feature.md), [migration workflow](references/concurrency-migration.md) and [product behaviour contract](references/product-behaviour-contract.md).
+Read [CFA specification](references/cfa-specification.md), [CFA change gate](references/cfa-change-gate.md), [reference feature](references/reference-feature.md), [migration workflow](references/concurrency-migration.md) and [product behaviour contract](references/product-behaviour-contract.md).
 
 This is a CFA migration. It changes the architecture as well as legacy GCD,
 OperationQueue and callback implementation details. Preserve user-visible

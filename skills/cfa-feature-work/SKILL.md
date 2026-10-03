@@ -5,8 +5,8 @@ description: Add, change or remove a feature in an existing CFA SwiftUI iOS app.
 
 # CFA feature work
 
-Read the [CFA specification](references/cfa-specification.md), [reference
-feature](references/reference-feature.md) and [product behaviour
+Read the [CFA specification](references/cfa-specification.md), [CFA change
+gate](references/cfa-change-gate.md), [reference feature](references/reference-feature.md) and [product behaviour
 contract](references/product-behaviour-contract.md) before editing.
 
 First identify the live target, AppModel composition, existing feature owner,

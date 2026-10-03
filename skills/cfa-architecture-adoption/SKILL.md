@@ -7,7 +7,7 @@ description: Adopt CFA in an existing iOS app or bring existing CFA features int
 
 Restructure an existing app around CFA while preserving its observable behaviour.
 
-Read [CFA specification](references/cfa-specification.md), [reference feature](references/reference-feature.md) and [product behaviour contract](references/product-behaviour-contract.md).
+Read [CFA specification](references/cfa-specification.md), [CFA change gate](references/cfa-change-gate.md), [reference feature](references/reference-feature.md) and [product behaviour contract](references/product-behaviour-contract.md).
 
 1. Identify the live target, dependency wiring and baseline build/tests. Map current screens, business decisions, state owners and persistence. Record existing failures separately.
 2. Define a bounded feature and its behaviour contract. Map each responsibility to its CFA destination before moving code. Preserve public interfaces with temporary adapters where needed.

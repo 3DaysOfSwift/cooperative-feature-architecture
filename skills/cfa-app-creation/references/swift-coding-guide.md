@@ -61,6 +61,23 @@ ViewModels own presentation state: drafts, focus, selection, navigation, loading
 
 **Rule:** Keep Views declarative and free of imperative workflows in almost all cases. Move multi-step event handling into the ViewModel belonging to that View.
 
+Each SwiftUI View describes the interface; it does not perform imperative work.
+Move view-related work—formatting externally supplied values, reading bundle or
+system metadata, constructing presentation strings, coordinating actions, and
+handling UI outcomes—to that View's ViewModel so it can be tested without
+rendering the View. Move business decisions, persistence, network work, and
+shared feature state to the owning FeatureManager. Bindings, simple conditional
+rendering, and short layout-local values that directly describe the rendered
+interface remain declarative View code.
+
+In CFA, a screen ViewModel has one narrow initializer input only: its owning
+FeatureManager, defaulted from `AppModel.shared`. Do not add convenience inputs
+for bundle values, URLs, strings, dates, defaults, services, or other UI data.
+That information belongs to the owning FeatureManager and flows to the View
+through the ViewModel. Tests may pass an isolated FeatureManager through that
+same single parameter; production screens instantiate their ViewModel with no
+arguments.
+
 ```swift
 // View: describe the control and forward intent.
 Button("Save", action: viewModel.save)
@@ -82,9 +99,11 @@ func save() {
 
 The example assumes a ViewModel-owned task property and explicit feature dependency. Choose cancellation and lifetime for the actual operation; a persistent save need not be cancelled just because the screen disappears. Business rules within `feature.save` remain in the model.
 
-Bindings, conditional content, `ForEach`, direct dismissal and lifecycle glue such as `.task { await viewModel.load() }` are declarative UI work. UIKit delegate and layout code belongs in a named presentation adapter when needed. Do not create extra layers just to move a trivial assignment.
+Bindings, conditional content, `ForEach` and direct dismissal are declarative UI work. A View `.task` is lifecycle-bound work, not a general loading mechanism: use it only when cancellation on that screen's disappearance is the intended product behaviour. Do not use it for app-launch refreshes, persistent saves or shared feature work that must outlive a screen. UIKit delegate and layout code belongs in a named presentation adapter when needed. Do not create extra layers just to move a trivial assignment.
 
-**Review:** A reader should see what the screen displays and which intents it forwards without tracing storage calls, business rules or multi-step tasks in its body.
+The SwiftUI environment is for app-wide presentation dependencies such as `ThemeManager`, locale-aware formatting or accessibility configuration. Do not place `AppModel` or a feature manager in the environment. Use the active architecture's declared composition route for feature dependencies. In CFA, a View owns its ViewModel and that ViewModel defaults its narrow live feature dependency from `AppModel.shared`; do not replace that route with screen-initializer plumbing.
+
+**Review:** A reader should see what the screen displays and which intents it forwards without tracing storage calls, bundle/system reads, formatting work, business rules, or multi-step tasks in its body. Does the ViewModel have only its defaulted FeatureManager input?
 
 ## 4. Prefer a straightforward solution
 
@@ -95,6 +114,76 @@ Prefer explicit names and sequential steps over clever chains, nested ternaries 
 Keep one authoritative source of each piece of state. Derive values instead of storing redundant flags unless a measured cache needs them. Keep cache invalidation inputs explicit. Avoid broad rewrites when a small correction addresses the problem.
 
 **Review:** Can a new reader identify the inputs, decision, state changes and outcome without following unnecessary indirection?
+
+### Names describe information, not only mechanics
+
+**Rule:** Name a value for the specific information it contains or identifies. A name such as `storageKey`, `value`, `data`, `result` or `manager` usually describes a mechanism or a vague role, not the information a reader needs to understand.
+
+For example, a key used only to persist the selected colour theme is `selectedColourThemeStorageKey`, not `storageKey`. The longer name is valuable because it makes the stored information clear at every read and write site. Use concise names when the scope makes the information genuinely obvious; do not shorten away the domain meaning.
+
+**Review:** Read each declaration without its implementation. Can a reader identify the information it stores, not merely the API or container it uses?
+
+### Every Swift file declares the imports it needs
+
+**Rule:** When creating, moving, or splitting a Swift file, add every module
+required by the declarations and APIs used in that file. Do not rely on imports
+in a neighbouring file or on accidental target-wide compilation context.
+
+For example, a test double that conforms to a production protocol must import
+the modules needed by the protocol's types; a SwiftData model or manager imports
+`SwiftData`; an observable type imports `Observation` when the target does not
+provide it transitively. Source-file imports are part of the file's explicit
+contract.
+
+**Review:** Before delivery, inspect every new or moved Swift file on its own:
+can its imports explain every external framework type, macro, protocol, and API
+used in its declarations?
+
+### Keep operation state separate from domain data
+
+**Rule:** An API function returns its domain value or throws. A feature manager
+owns current domain data, operation state, and any retained error as separate
+properties. Do not make a `LoadState` enum carry all three.
+
+For example, Git Repositories are `repos`; the current request is
+`isRefreshing`; an unsuccessful request is `refreshError`. A type such as
+`GitReposLoadState.loaded([Repo])` and `.failed(String)` mixes a result value,
+user-facing state, and durable cache into one fragile abstraction.
+
+**Review:** Can cached data remain visible while a refresh runs or fails? If
+not, separate the domain data from the operation state.
+
+### Name shared feature capabilities as features
+
+**Rule:** Refer to an app capability as a **feature**, even when its concrete
+implementation type is a manager. Use `gitReposFeature`, `settingsFeature`, or
+`purchaseFeature` for AppModel properties, stored dependencies, initializer
+labels, and local values. This makes it clear that the value represents a CFA
+feature, not a generic object whose implementation detail happens to be a
+manager.
+
+Reserve the `Manager` suffix for a concrete type that manages something:
+`GitReposManager`, `SettingsManager`, or `ThemeManager`. Infrastructure is not
+a feature merely because it has a manager-like responsibility: name it for the
+thing it manages, such as `RepoFileCache` or `LocalDatabase`.
+
+**Review:** Do references describe the feature (`settingsFeature`) while the
+concrete type describes its responsibility (`SettingsManager`)?
+
+### Every type must earn its existence
+
+**Rule:** Do not create a type merely because an architecture diagram has a box with that name. Every new type must own a real responsibility that cannot be expressed more clearly by an existing type.
+
+- A **feature manager** is the concrete implementation of a feature. It owns durable feature state, a business policy, or a cohesive operation that coordinates its provider and storage dependencies.
+- A **ViewModel** owns presentation state, an asynchronous UI workflow, or a translation from feature outcomes into user-facing state. Do not create one just to forward `selectTheme()` to another object.
+- A **protocol** represents a genuine substitution boundary: a second production implementation, an external capability that must be replaced in deterministic tests, or a library-facing contract. Do not create a protocol “just in case.”
+- An **actor** owns mutable state that must be isolated away from its caller. Do not add one to hide an isolation error or make ordinary code appear concurrent.
+
+A thin starter project must still be honest. A Settings feature may have a manager because it owns persisted user preferences. In CFA, its screen still has a dedicated ViewModel: the ViewModel owns the declarative screen boundary and presentation formatting, while the feature owns the preference state and mutation.
+
+When an active architecture explicitly requires a named boundary, its contract takes precedence over this generic rule. In CFA, every screen-level View has its own ViewModel and reaches its feature through that ViewModel; do not remove the ViewModel or add feature-manager parameters to a screen initializer in the name of generic minimalism.
+
+**Review:** For every added type, write one sentence beginning “This type owns…” If that sentence is vague, duplicates an existing owner, or only describes forwarding, remove the type or merge the responsibility into its existing owner.
 
 ## 5. Fail honestly and preserve saved data
 
@@ -112,9 +201,11 @@ For persistence, prepare the proposed state, commit it, then expose confirmed su
 
 Use structured child tasks for independent work whose lifetime belongs to the current operation. Give longer-lived tasks an owner and cancellation policy. A `Task` does not automatically move expensive work off the main actor; use suitable actor workers for parsing, persistence and generation. Do not add detached tasks merely to silence isolation errors.
 
+Store a Task handle only when later code must cancel it, await it, inspect it, or enforce an overlapping-operation policy. A one-time lifecycle action can instead use an explicit Boolean guard. When a Task needs one dependency, capture that dependency directly rather than weakly capturing `self` only to reach it.
+
 Actors protect isolated state, but an `await` permits reentrancy. Decide whether overlapping operations are rejected, coalesced, serialized or allowed independently. Recheck relevant access and request identity after suspension before publishing results. Avoid blocking waits and replacing GCD mechanically without preserving its ordering guarantees.
 
-**Review:** Test cancellation, overlap, stale completion and retry with controlled dependencies rather than sleeps or scheduler assumptions.
+**Review:** For every Task, identify its creator, why its handle is or is not stored, its cancellation policy, and the exact state it may publish. Test cancellation, overlap, stale completion and retry with controlled dependencies rather than sleeps or scheduler assumptions.
 
 ## 7. Keep launch and interactions responsive
 
@@ -138,6 +229,30 @@ Run focused tests, then the relevant wider suite and build. Source parsing is no
 
 ## 9. SwiftData: one app-owned persistent store
 
+### Choose the simplest storage route that fits the data
+
+**Rule:** Choose one local persistence route for one responsibility. For a
+small, replaceable remote snapshot that is loaded and saved as one value, use a
+JSON file cache. Encode and decode the domain value once, whether its source is
+disk or the network. Do not add SwiftData alongside a JSON cache merely to
+store the same downloaded data.
+
+Use SwiftData when the product genuinely needs structured local data: many
+records, querying, filtering, sorting, relationships, incremental edits,
+durable user-created content, or migrations. A database is not automatically
+more commercial than a file. It earns its complexity when those capabilities
+are required.
+
+When two storage systems perform the same job for the same data, stop and
+identify the distinct responsibility of each. If no distinct responsibility
+exists, remove one. A remote API and a local cache are different sources with
+different jobs; two local caches or a database plus a file cache for the same
+snapshot are duplication.
+
+**Review:** Is this data a single replaceable snapshot or a growing, queryable
+local collection? Can one storage implementation meet the requirement without
+duplicating encoding, persistence, invalidation, or recovery policy?
+
 Use **one shared ModelContainer backed by one persistent SwiftData store per iOS app**, owned by the production
 AppModel composition root. Features keep their records in separate model types
 or logical collections inside that store. A feature boundary is not a database
@@ -145,12 +260,25 @@ boundary. This is our architecture convention, not a limitation of SwiftData.
 
 - Create the store once and inject it into every persistent repository. Make
   that dependency mandatory: no optional store arguments, hidden fallback
-  containers, or per-feature database files.
+  containers, silent in-memory fallbacks, or per-feature database files. A
+  production store-opening failure must take an explicit, user-safe startup
+  path; it must never make a persistent app silently appear empty.
 - Keep schema, configuration, database location and lifetime in the model's
   persistence layer. Views and ViewModels do not create or choose stores.
 - Multiple actor-owned contexts may use the same container. Keep each context
   and its managed objects within its owner; pass Sendable values across actors.
   A separate context does not require a separate persistent store.
+- For a production feature that performs meaningful database work, make its
+  persistence implementation a `@ModelActor`. The model actor owns its
+  `ModelContext` and serializes fetch, insert, delete, and save work away from
+  the Main Actor. Feature managers remain `@MainActor` because they publish
+  observable state to SwiftUI; they await the model actor and publish immutable
+  domain values, never SwiftData `@Model` instances.
+- A small UI-owned context may remain on `@MainActor` only when its work is
+  demonstrably short and it deliberately serves UI-managed models. Do not use
+  that convenience as the default for a commercial feature with a growing data
+  set. Do not replace `@ModelActor` with a plain actor that happens to contain
+  a `ModelContext`.
 - Open lazily off MainActor and coalesce overlapping requests. Serialize
   container creation across independent graphs where required to avoid the
   observed Core Data initialization race. Do not serialize the entire test

@@ -2,13 +2,42 @@
 
 ## Requirements
 
-- Node.js 20 or newer (`node --version`). No npm package installation is needed.
+- Node.js 20 or newer (`node --version`) for Terminal installation and the dashboard. No npm package installation is needed. On macOS, `Install.command` can also use Codex's installed runtime when it is available.
 - For the Codex plugin: a Codex CLI supporting `codex plugin add` and personal marketplaces.
 - For iPhone builds: a Mac, Xcode and an available Simulator/device.
 - For AI-guided workflows: your own supported agent/account and its normal permissions.
 
 Node.js, Xcode and the AI host are not bundled. The package contains the architecture,
-all seven skills, references and dashboard executable source, with no Trend dependency.
+all eight skills, references and dashboard executable source, with no Trend dependency.
+
+## Xcode project template
+
+The Toolkit includes **CFA App**, a native Xcode project template. It is
+separate from the AI-skill installation: install it when you want a new CFA
+project to appear in Xcode's project chooser.
+
+From the root of the extracted Toolkit release, double-click
+`Install Xcode Template.command`. It copies the template without requiring
+Node.js.
+
+You can instead run it from Terminal:
+
+```sh
+./Install\ Xcode\ Template.command
+```
+
+Wait for the installer to say **“CFA App is installed in Xcode”** and show
+the installed folder. If it does not, the template has not been installed;
+read the Terminal message before closing that window.
+
+Then quit and reopen Xcode. Choose **File → New → Project → iOS → CFA App**.
+Xcode will ask for the product name and organisation identifier and generate a
+new project. The template installer copies only into your personal Xcode
+Templates folder; it never changes an existing app.
+
+Run the installer again to update a previous CFA copy. It replaces only a
+template containing CFA's own marker and refuses to change a same-named
+template from another source.
 
 ## Recommended: Codex plugin
 
@@ -20,7 +49,9 @@ all seven skills, references and dashboard executable source, with no Trend depe
 node scripts/install.mjs
 ```
 
-On macOS you can instead open `Install.command`; Terminal will run the same installer.
+On macOS you can instead open `Install.command`; Terminal will run the same installer and can find Codex's installed runtime when a system Node installation is unavailable.
+When a CFA installation already exists, that command automatically requests a
+protected replacement. It still refuses an edited or unrelated installation.
 If macOS asks you to approve opening a downloaded script, inspect the script and use
 the terminal command above. The package is not an Apple-signed or notarised installer.
 
@@ -73,7 +104,7 @@ compatibility with every host version.
 node scripts/install.mjs --mode skills --skills-directory ~/.claude/skills
 ```
 
-This installs all seven folders into Claude Code's skill directory. Each is
+This installs all eight folders into Claude Code's skill directory. Each is
 self-contained: the CFA specification and supporting references are bundled as
 needed, and the dashboard source and docs are inside the review skill. Restart
 Claude Code or open a new conversation after installation.
@@ -106,7 +137,7 @@ names disappear from the active package. Open a new conversation afterward.
 For standalone mode, the installer refuses to proceed if `cfa-development` or
 `xcode-project-dashboard` remains under `.agents/skills`. Move these legacy folders
 outside the host’s skill discovery directory first, retaining any edits, then install
-the seven new skills. This prevents duplicate or conflicting guidance. The installer
+the eight new skills. This prevents duplicate or conflicting guidance. The installer
 never silently deletes an old skill or guesses whether local edits are disposable.
 
 ## Uninstall
@@ -116,10 +147,10 @@ substituting the marketplace name printed by the installer if it was not `person
 This removes native activation; the staged source and marketplace listing can remain
 for reinstall. Remove those deliberately only when you no longer need them.
 
-For standalone skills, remove only the seven installed folders printed by the installer:
+For standalone skills, remove only the eight installed folders printed by the installer:
 `cfa-app-creation`, `cfa-feature-work`, `cfa-architecture-adoption`,
-`swift-concurrency-migration`, `cfa-architecture-review`, `cfa-codebase-tidy`
-and `cfa-unit-tests`. Keep any local edits first.
+`swift-concurrency-migration`, `cfa-architecture-review`, `cfa-codebase-tidy`,
+`cfa-unit-tests` and `swift-code-quality`. Keep any local edits first.
 
 ## Offline staging and checksums
 

@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { root, skills } from './sync.mjs';
+import { root, skills, cfaSkills } from './sync.mjs';
 import { files, hash, json } from './files.mjs';
+import { verifyXcodeTemplateStructure } from './verify-xcode-template-structure.mjs';
 export function validate(base=root,{source=true}={}) {
   const manifest=json(path.join(base,'.codex-plugin/plugin.json'));
   if(manifest.name!=='cooperative-feature-architecture') throw Error('Unexpected plugin identifier.');
@@ -21,6 +22,11 @@ export function validate(base=root,{source=true}={}) {
     const guide = path.join(skill,'references/swift-coding-guide.md');
     if (!fs.existsSync(guide) || !text.includes('(references/swift-coding-guide.md)')) throw Error(`Missing Swift coding guide: ${name}`);
     if (source && hash(guide)!==hash(path.join(base,'architecture/swift-coding-guide.md'))) throw Error('Stale coding guide. Run npm run sync.');
+    if (cfaSkills.includes(name)) {
+      const gate = path.join(skill, 'references/cfa-change-gate.md');
+      if (!fs.existsSync(gate) || !text.includes('(references/cfa-change-gate.md)')) throw Error(`Missing CFA change gate: ${name}`);
+      if (source && hash(gate)!==hash(path.join(base, 'architecture/cfa-change-gate.md'))) throw Error('Stale CFA change gate. Run npm run sync.');
+    }
     // Check actual Markdown file links throughout skill resources; examples/URLs are not opened.
     for(const relative of files(skill).filter(f=>f.endsWith('.md'))) {
       const file=path.join(skill,relative), content=fs.readFileSync(file,'utf8');
@@ -35,10 +41,11 @@ export function validate(base=root,{source=true}={}) {
   }
   if(source) {
     if(json(path.join(base,'package.json')).version!==manifest.version) throw Error('Version mismatch.');
-    for(const name of skills) if(hash(path.join(base,'architecture/cfa-specification.md'))!==hash(path.join(base,`skills/${name}/references/cfa-specification.md`))) throw Error('Stale architecture copy. Run npm run sync.');
+    for(const name of cfaSkills) if(hash(path.join(base,'architecture/cfa-specification.md'))!==hash(path.join(base,`skills/${name}/references/cfa-specification.md`))) throw Error('Stale architecture copy. Run npm run sync.');
     for(const dir of ['src','Documentation']) for(const file of files(path.join(base,'tools/architecture-dashboard',dir))) {
       if(hash(path.join(base,'tools/architecture-dashboard',dir,file))!==hash(path.join(base,'skills/cfa-architecture-review/scripts/dashboard',dir,file))) throw Error(`Stale bundled tool: ${file}`);
     }
+    if (process.platform === 'darwin') verifyXcodeTemplateStructure(path.join(base, 'templates/Xcode/Project Templates/iOS/Application/CFA App.xctemplate'));
   }
   return manifest;
 }

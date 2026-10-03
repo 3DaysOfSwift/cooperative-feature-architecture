@@ -14,7 +14,7 @@ can build faster and maintain the result with confidence.
 
 Its structure is visible in Xcode from the first day. This shortened map uses
 [Trend](https://github.com/3DaysOfSwift/Trend-iOS-App-Swift-Concurrency-CFA) as
-an example and expands its feature area:
+an example and reveals its features consolodated into one easy-to-read folder:
 
 ```text
 Application
@@ -53,7 +53,7 @@ state it owns.
 
 # Toolkit - 7 AI Skills + 1 Dashboard
 
-**The CFA Toolkit is a free, open-source collection of seven AI skills and one
+**The CFA Toolkit is a free, open-source collection of eight AI skills and one
 tool.** It teaches an AI coding tool how to create, change, tidy, test, migrate
 and review an iOS project using the CFA architecture. The skills give the AI a
 clear blueprint to follow, which makes AI-driven development more consistent
@@ -70,21 +70,53 @@ and released under the [MIT licence](LICENSE).
 ## Install the CFA Toolkit once
 
 An AI skill is a small folder of instructions for an AI coding tool. Installing
-the CFA Toolkit copies its seven skill folders into the place where your coding
+the CFA Toolkit copies its eight skill folders into the place where your coding
 tool looks for skills on your computer. When you later ask your AI to create an
 iOS app, it can read the CFA architecture instructions and use CFA.
 
 The installation does not change Xcode or your existing apps. It only makes the
 CFA Toolkit instructions available to your AI coding tool.
 
+## Install the CFA App template in Xcode
+
+The CFA Toolkit also includes a native Xcode project template. It creates a
+new, runnable CFA app directly from **File → New → Project**. It does not
+modify an existing Xcode project.
+
+Download or clone the Toolkit, then double-click
+`Install Xcode Template.command`. It does not require Node.js.
+
+You can alternatively run the same installer from Terminal:
+
+```sh
+./Install\ Xcode\ Template.command
+```
+
+The installer prints the exact folder it created. If it does not print
+**“CFA App is installed in Xcode”**, the installation did not finish—read
+the message in the Terminal window before closing it.
+
+Quit and reopen Xcode. Choose **File → New → Project → iOS → CFA App**.
+Xcode asks for your product name and organisation identifier, then creates a
+new project with the CFA folders, feature manager, network refresh, SwiftData
+cache, retry state and colour-theme settings already in place.
+
+Running the installer again safely updates an existing CFA-installed template.
+It refuses to replace a same-named template from another source.
+
 ### Codex
 
-Download and extract the CFA Toolkit plugin release. In Terminal, change into the
-extracted folder and run:
+Download and extract the CFA Toolkit plugin release, then double-click
+`Install.command`. It finds a normal Node installation when one exists and can
+also use Codex's installed runtime. In Terminal, the equivalent command is:
 
 ```sh
 node scripts/install.mjs
 ```
+
+When opened again, `Install.command` automatically requests a protected update
+of its existing CFA installation. It still refuses to replace edited or
+unrelated files.
 
 This installs the CFA Toolkit into your personal Codex marketplace. Open a **new** Codex
 conversation and paste this message:
@@ -102,7 +134,7 @@ without you having to paste its rules into every prompt.
 ### Claude Code and other AI coding tools
 
 The portable CFA Toolkit skills are in the repository’s `skills` folder. Copy
-all seven folders inside it, without renaming them, into the folder where your
+all eight folders inside it, without renaming them, into the folder where your
 AI coding tool reads skills.
 
 For Claude Code, that folder is commonly `~/.claude/skills`. This command copies
@@ -116,8 +148,8 @@ If your tool uses a different skills folder, replace `~/.claude/skills` with
 that folder. Restart the AI tool or start a new conversation, then send it the
 same confirmation message shown above.
 
-You need Node.js 20 or newer to run the installer and the dashboard. If your
-tool supports plain skill folders, you can copy the seven folders manually
+The dashboard needs Node.js 20 or newer. `Install.command` can use Codex's
+installed runtime when it is available. If your tool supports plain skill folders, you can copy the eight folders manually
 instead of using Node.js.
 
 For screenshots, upgrades and troubleshooting, read
@@ -140,7 +172,7 @@ say “Using CFA” or name the relevant skill from the list below.
 
 ## CFA Toolkit skills
 
-The CFA Toolkit contains seven AI skills and one local analysis tool.
+The CFA Toolkit contains eight AI skills and one local analysis tool.
 
 | Skill | Use it when you want to… |
 | --- | --- |
@@ -155,6 +187,14 @@ The CFA Toolkit contains seven AI skills and one local analysis tool.
 The included **Xcode Project Dashboard** scans a Swift Concurrency project and
 creates a local HTML report. It exposes task creation, task ownership, source
 locations, architecture observations and imported test results.
+
+## Start with a complete CFA app
+
+[iOS App](examples/iOS%20App) is the deliberately small, complete Xcode
+project for learning the structure before building a product. It has a tab bar,
+a launch refresh, a real public-network request, a SwiftData cache, retry and
+failure states, persistent colour themes and focused tests. It is the source
+project for the installable **CFA App** Xcode template.
 
 ## The CFA architecture
 
@@ -185,9 +225,9 @@ Application
 │   │   ├── AppColourTheme.swift
 │   │   └── ThemeManager.swift
 │   └── Views
-│       └── Today
-│           ├── TodayView.swift
-│           └── TodayViewModel.swift
+│       └── Git Repos
+│           ├── GitReposView.swift
+│           └── GitReposViewModel.swift
 ├── 2 - AppModel
 │   ├── AppModel.swift
 │   ├── Features
@@ -205,13 +245,13 @@ Application
 │       └── Local
 │           └── LocalDataStore.swift
 ├── 3 - App Resources
-│   ├── Assets.xcassets
 │   └── PrivacyInfo.xcprivacy
 ├── 4 - Swift Extensions
 │   └── Date+Day.swift
+├── Assets.xcassets
 └── ApplicationTests
     ├── ViewModelTests
-    │   └── TodayViewModelTests.swift
+    │   └── GitReposViewModelTests.swift
     └── FeatureTests
         └── WeightLogManagerTests.swift
 ```

@@ -16,7 +16,7 @@ test('standalone release carries scanner dependencies and scans outside the sour
  const {dir,source}=release(t); const destination=path.join(dir,'customer');
  const result=install({source,destination,mode:'skills'});
  assert.equal(result.status,'installed');
- assert.equal(result.paths.length,7);
+ assert.equal(result.paths.length,8);
  for(const installed of result.paths) assert.ok(fs.existsSync(path.join(installed,'SKILL.md')));
  const tidy=path.join(destination,'.agents/skills/cfa-codebase-tidy');
  assert.ok(result.paths.includes(tidy));
@@ -41,7 +41,7 @@ test('portable installation accepts an explicit host skill directory',t=>{
  const {dir,source}=release(t); const destination=path.join(dir,'customer');
  const skillsDirectory=path.join(destination,'.claude','skills');
  const result=install({source,destination,mode:'skills',skillsDirectory});
- assert.equal(result.paths.length,7);
+ assert.equal(result.paths.length,8);
  assert.ok(result.paths.every(item=>item.startsWith(skillsDirectory+path.sep)));
  assert.ok(fs.existsSync(path.join(skillsDirectory,'cfa-feature-work','SKILL.md')));
  assert.ok(fs.existsSync(path.join(skillsDirectory,'cfa-unit-tests','SKILL.md')));

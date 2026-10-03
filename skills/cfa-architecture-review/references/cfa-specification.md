@@ -145,12 +145,12 @@ Application
 │       ├── CloudKit
 │       └── Networking
 ├── 3 - App Resources
-│   ├── Assets.xcassets
 │   ├── PrivacyInfo.xcprivacy
 │   ├── Purchases.storekit (when local StoreKit testing is used)
 │   └── Application.entitlements
 ├── 4 - Swift Extensions
 │   └── Type+Capability.swift
+├── Assets.xcassets
 └── ApplicationTests
     ├── View model tests
     └── AppModel tests
@@ -158,6 +158,27 @@ Application
 
 The Xcode navigator must communicate the design without requiring a developer
 to inspect source files.
+
+### Xcode Template Layout Is a Contract
+
+For a CFA Xcode template, the on-disk path and the Xcode navigator group are
+both part of the architecture. CFA follows Xcode's own app-project conventions:
+
+- `App.swift` is in `1 - View`.
+- `Assets.xcassets` stays at the app target's top level. It is Xcode's special
+  asset catalog and owns the AppIcon build setting.
+- Privacy manifests, entitlements and local StoreKit files are in
+  `3 - App Resources`.
+
+Do not create a second CFA asset catalog or override Xcode's inherited asset
+generator. In `TemplateInfo.plist`, every CFA-owned resource needs a matching
+`Path`, single-string `Group`, and `Nodes` entry. The starter's
+`PrivacyInfo.xcprivacy` ensures `3 - App Resources` is a real navigator group,
+not an empty visual convention.
+
+Toolkit maintainers must run `node scripts/verify-xcode-template-structure.mjs`
+after changing the CFA App Xcode template. A template is incomplete if its
+generated navigator does not match this folder map.
 
 StoreKit test configuration files (`.storekit`) belong in `3 - App Resources`
 on disk and in the navigator, rather than loose at the project root. When
@@ -344,6 +365,9 @@ A ViewModel:
 - is named after exactly one View;
 - uses `@MainActor` and `@Observable` when it exposes UI-observed state;
 - is created and owned by its View using `@State`;
+- accepts only its narrow owning FeatureManager in its initializer, defaulted
+  from `AppModel.shared`; it does not accept bundle metadata, URLs, defaults,
+  services, or other convenience presentation inputs;
 - lives only as long as that View lives;
 - is never cached by a root ViewModel, another ViewModel, or AppModel;
 - never calls another ViewModel;
@@ -365,6 +389,16 @@ init(habits: any HabitsFeature = AppModel.shared.habitsFeature) {
 
 This is deliberate dependency injection without forcing dependency plumbing
 through every SwiftUI initializer.
+
+### CFA screen structure invariant
+
+This is mandatory for CFA application screens. Before delivery, verify all three:
+
+1. Every screen-level View owns one dedicated `@State` ViewModel created at its property declaration.
+2. Each ViewModel initializer defaults its narrow live feature dependency from `AppModel.shared` while allowing tests to supply an isolated replacement.
+3. A screen View initializer does not receive `AppModel`, a feature manager, repository or ViewModel from its caller.
+
+Do not remove a screen ViewModel, or pass feature dependencies through a screen initializer, merely because a generic architecture guideline would use fewer types. CFA makes the ViewModel boundary explicit so every screen has one clear, testable route into the shared application graph.
 
 Most screens need one feature API. A screen may legitimately need more—for
 example, a habits screen may read both habits and purchase entitlement state.
@@ -450,6 +484,14 @@ A feature manager owns one coherent application capability. Name it directly:
 `SettingsManager`, `PurchaseManager`, `HabitsManager`, not
 `SettingsFeatureManager`.
 
+Every AppModel property that exposes a feature uses the explicit suffix
+`Feature`: `settingsFeature`, `gitReposFeature`, `purchaseFeature`. Use the
+same vocabulary for ViewModel dependencies, initializer labels, and local
+references. Never shorten one to a plural domain noun such as `repos` or
+`settings`; that makes a shared feature capability look like a collection or
+value. Reserve the `Manager` suffix for concrete implementation type names,
+such as `SettingsManager` and `GitReposManager`.
+
 A feature manager:
 
 - exposes a narrow protocol written in domain language;
@@ -504,6 +546,14 @@ Repository implementations:
 - protect mutable state using actors or another explicit isolation mechanism;
 - define offline, retry, and synchronization behaviour;
 - throw meaningful errors rather than silently inventing success.
+
+For production SwiftData repositories with non-trivial reads, writes, imports,
+or data sets, use a dedicated `@ModelActor`. It owns its `ModelContext`; feature
+managers remain `@MainActor` and publish only immutable `Sendable` domain
+values after awaiting the repository. SwiftData `@Model` records never cross
+from the model actor into a feature manager, ViewModel, or View. A small,
+deliberately UI-owned context may be main-actor isolated when its work is proven
+short, but that is an exception—not the default commercial persistence design.
 
 Feature state becomes authoritative only after persistence succeeds unless the
 feature explicitly defines optimistic behaviour and rollback.
@@ -603,54 +653,65 @@ or revision checks so stale work cannot publish over current state. Do not leave
 observable state temporarily inconsistent across an `await` unless that
 intermediate state is intentional and representable.
 
-## Use Application Launch as an Opportunity to Load
+## Use Application Launch as an Opportunity to Refresh Features
 
 Construction must not silently trigger asynchronous side effects. Initializers
 assemble valid objects; clearly named methods perform work.
 
-The first few seconds after launch are a valuable opportunity. The user is
-looking at the first screen and deciding what to do, so AppModel can begin
-loading app-scoped features before the user opens them:
+The first few seconds after launch are a valuable opportunity. The application
+lifecycle—not RootTabView—tells AppModel that launch completed:
 
 ```swift
 func applicationDidFinishLaunching() async
 ```
 
-`applicationDidFinishLaunching()` is an opportunity to trigger loading, not the
-owner of the resulting feature state. It starts independent feature refreshes
-concurrently so an API or storage request is likely to finish before the user
-opens that screen. It does not interpret success, combine failures, show errors,
-or decide whether the user may enter a feature.
+AppModel keeps one simple Boolean to ensure the method runs once. It does not
+store a Task handle. The app delegate creates the launch Task and awaits this
+method; AppModel then awaits the required feature-manager refreshes.
+AppModel does not interpret success, combine failures, show errors, or decide
+whether the user may enter a feature.
 
-Each feature manager owns its own load state and knows whether it is idle,
-loading, loaded, empty, or failed. When a screen requests feature data, the
-feature manager loads it if required or returns the state it already owns. A
-failure is never hidden: the feature exposes a value that its ViewModel can
-publish as soon as the screen appears.
+RootTabView is structural only: it presents tabs and navigation. It never starts
+a feature refresh, interprets loading, or presents a feature failure. Each
+feature screen owns that presentation through its own ViewModel.
 
-Loading remains an explicit command such as `loadIfRequired()` or `refresh()`.
-Reading a property must not secretly begin asynchronous work. The ViewModel asks
-the feature to load when its screen appears; the feature decides from its current
-state whether work is required. This keeps side effects visible without making
-the ViewModel reproduce feature loading rules.
+A feature manager owns the current domain data and minimal operation state as
+separate values. A network API returns domain data or throws an error. Do not
+create a `LoadState` enum that carries repositories, error text, and operation
+status together: it is a disguised result type that makes cached data and retry
+behaviour needlessly difficult to model.
 
-The screen is a window into that feature state. A failed screen explains the
-problem and offers an appropriate retry command. Airplane Mode, a temporary API
-failure, unavailable iCloud, and lost connectivity are legitimate user flows,
-not exceptional states to conceal. Retrying asks the same feature manager to
-load again; the View does not reproduce loading rules.
+```swift
+private(set) var repos: [Repo] = []
+private(set) var isRefreshing = false
+private(set) var refreshError: (any Error)?
+```
+
+`refresh()` is an explicit feature-manager command. It may first publish saved
+data from SwiftData, then request newer data, update storage, and publish the
+confirmed current data. Reading a property must not secretly begin asynchronous
+work. A ViewModel exposes these values as presentation-ready properties; its View
+shows loading, failure, cached data, and retry for that feature.
+
+Do not use `.task { await viewModel.load() }` as the default for launch refresh.
+Use a View `.task` only for work whose lifetime is intentionally tied to that
+specific screen and whose cancellation when the screen disappears is correct.
+Airplane Mode, a temporary API failure, unavailable iCloud, and lost
+connectivity are legitimate user flows, not exceptional states to conceal.
+Retrying asks the same feature manager to refresh again; the View does not
+reproduce feature rules.
 
 One feature failing must not prevent unrelated features from becoming usable.
-If several scenes report application launch, they await the same stored Task
-rather than starting duplicate opportunistic loads.
+If several scenes report application launch, AppModel's Boolean prevents
+duplicate launch refreshes.
 
 Individual feature managers have no concept of an application launch unless
 launch is genuinely part of that feature's domain. `DailyTipManager.refresh()`
 refreshes tips; it does not `beginLaunch()`.
 
 Tests directly test that the launch opportunity triggers the intended features
-without making AppModel responsible for their results. Each feature manager has
-its own tests for successful loading, failed loading, retained failure state,
+once without making AppModel responsible for their results. Each feature manager
+has its own tests for successful refresh, failed refresh, retained cached data,
 and retry.
 
 Ordinary feature and ViewModel tests do not need to call application launch

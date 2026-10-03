@@ -13,7 +13,7 @@ export function stageRelease(output,base=root) {
     fs.mkdirSync(path.dirname(destination),{recursive:true});
     fs.cpSync(path.join(base,relative),destination,{recursive:true,errorOnExist:true,force:false});
   };
-  for(const relative of ['.codex-plugin','plugin.json','readme-images','skills','LICENSE','Install.command','docs','architecture','examples','scripts/install.mjs','scripts/files.mjs','scripts/sync.mjs'])copy(relative);
+  for(const relative of ['.codex-plugin','plugin.json','readme-images','skills','LICENSE','Install.command','Install Xcode Template.command','docs','architecture','examples','templates','scripts/install.mjs','scripts/install-xcode-template.mjs','scripts/files.mjs','scripts/sync.mjs'])copy(relative);
   fs.copyFileSync(path.join(base,'README.md'),path.join(output,'README.md'));
   writeJSON(path.join(output,'checksums.json'),inventory(output));
   validate(output,{source:false});
