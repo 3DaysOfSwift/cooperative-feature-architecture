@@ -7,6 +7,10 @@ description: Adopt CFA in an existing iOS app or bring existing CFA features int
 
 Restructure an existing app around CFA while preserving its observable behaviour.
 
+A flat `App.swift` or `ContentView` that mixes screen state, persistence, and
+business work is not already CFA. Adopt real ownership boundaries before adding
+folders; do not relabel a flat app as CFA.
+
 Read [CFA specification](references/cfa-specification.md), [CFA change gate](references/cfa-change-gate.md), [reference feature](references/reference-feature.md) and [product behaviour contract](references/product-behaviour-contract.md).
 
 1. Identify the live target, dependency wiring and baseline build/tests. Map current screens, business decisions, state owners and persistence. Record existing failures separately.

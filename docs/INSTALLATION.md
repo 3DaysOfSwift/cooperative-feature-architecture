@@ -69,6 +69,26 @@ current Terminal folder with:
 cfa dashboard
 ```
 
+The same command can confirm the installed CFA skills and optional project
+guidance:
+
+```sh
+cfa doctor
+```
+
+To reinforce CFA automatically whenever an AI host works inside one existing
+CFA project, append safe, marked guidance to that project’s instruction file:
+
+```sh
+cfa enable-project /path/to/your-cfa-project
+```
+
+This does not modify Swift source. It preserves any existing `AGENTS.md` text
+and appends CFA guidance once. For Claude Code, use `--host claude` to write or
+append `CLAUDE.md` instead. Project guidance is optional: installed skill
+descriptions remain the mechanism that matches ordinary iOS prompts across the
+computer.
+
 If `cfa` is not found, add its folder to zsh's path once and open a new Terminal:
 
 ```sh

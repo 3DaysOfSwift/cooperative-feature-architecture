@@ -12,6 +12,7 @@
     "test": "node --test test/*.test.mjs tools/architecture-dashboard/test/*.test.mjs",
     "sync": "node scripts/sync.mjs",
     "validate": "node scripts/validate.mjs",
+    "evals": "node scripts/run-evaluations.mjs",
     "verify:xcode-template": "node scripts/verify-xcode-template-structure.mjs",
     "release": "python3 scripts/release.py"
   }

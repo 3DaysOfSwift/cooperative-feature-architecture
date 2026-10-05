@@ -51,7 +51,7 @@ provides guidance for AI-written code, has fewer moving parts, and gives a
 developer a visible path from SwiftUI to each implemented feature and the shared
 state it owns.
 
-# Toolkit - 7 AI Skills + 1 Dashboard
+# Toolkit - 7 CFA Skills + Swift Quality + 1 Dashboard
 
 **The CFA Toolkit is a free, open-source collection of eight AI skills and one
 tool.** It teaches an AI coding tool how to create, change, tidy, test, migrate
@@ -98,7 +98,7 @@ the message in the Terminal window before closing it.
 
 Quit and reopen Xcode. Choose **File → New → Project → iOS → CFA App**.
 Xcode asks for your product name and organisation identifier, then creates a
-new project with the CFA folders, feature manager, network refresh, SwiftData
+new project with the CFA folders, feature manager, network refresh, JSON file
 cache, retry state and colour-theme settings already in place.
 
 Running the installer again safely updates an existing CFA-installed template.
@@ -183,6 +183,7 @@ The CFA Toolkit contains eight AI skills and one local analysis tool.
 | [CFA Architecture Review](skills/cfa-architecture-review/SKILL.md) | inspect architecture and concurrency without changing the app. |
 | [CFA Codebase Tidy](skills/cfa-codebase-tidy/SKILL.md) | simplify a CFA project after feature work. |
 | [CFA Unit Tests](skills/cfa-unit-tests/SKILL.md) | write and audit tests that protect real feature behaviour. |
+| [Swift Code Quality](skills/swift-code-quality/SKILL.md) | apply Matt’s Swift standards to production code, examples and open-source projects. |
 
 The included **Xcode Project Dashboard** scans a Swift Concurrency project and
 creates a local HTML report. It exposes task creation, task ownership, source
@@ -190,11 +191,10 @@ locations, architecture observations and imported test results.
 
 ## Start with a complete CFA app
 
-[iOS App](examples/iOS%20App) is the deliberately small, complete Xcode
+The installable **CFA App** Xcode template is a deliberately small, complete
 project for learning the structure before building a product. It has a tab bar,
-a launch refresh, a real public-network request, a SwiftData cache, retry and
-failure states, persistent colour themes and focused tests. It is the source
-project for the installable **CFA App** Xcode template.
+a launch refresh, a real public-network request, a JSON file cache, retry and
+failure states, persistent colour themes and focused tests.
 
 ## The CFA architecture
 
@@ -239,7 +239,7 @@ Application
 │   │   │   └── WeightEntry.swift
 │   │   └── Progress
 │   │       └── ProgressManager.swift
-│   └── User Data Storage
+│   └── Networking & Data Storage
 │       ├── Protocols
 │       │   └── WeightRepository.swift
 │       └── Local
@@ -310,6 +310,32 @@ inside it. To analyse another project, give its folder path:
 
 ```sh
 cfa dashboard /path/to/your-xcode-project
+```
+
+### Keep CFA visible in one project
+
+Installed skill descriptions make CFA available for ordinary iOS requests
+across your computer. For an existing CFA project, you can also add a small,
+host-aware project instruction file once:
+
+```sh
+cd /path/to/your-cfa-project
+cfa enable-project
+```
+
+The command appends marked guidance to an existing `AGENTS.md` without
+overwriting it. For Claude Code, choose its instruction filename explicitly:
+
+```sh
+cfa enable-project --host claude
+```
+
+This is optional. It reinforces CFA in that repository; it does not install
+skills or alter source code. Check the current installation and project guidance
+at any time with:
+
+```sh
+cfa doctor
 ```
 
 The installer places `cfa` in `~/.local/bin`. If Terminal says `command not
