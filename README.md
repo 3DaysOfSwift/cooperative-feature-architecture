@@ -286,6 +286,22 @@ creates clear CFA feature boundaries and moves concurrency one feature at a
 time. Builds, tests and manual regression testing check that the migrated app
 still does what the original app did.
 
+## CFA Inspector
+
+The installer provides one shared, read-only inspector; it is not copied into
+each app. Run `cfa inspect` from a project folder, or pass a project path:
+
+```sh
+cfa inspect /path/to/your-xcode-project
+cfa inspect /path/to/your-xcode-project --json
+```
+
+It maps each screen to its adjacent ViewModel, visible `AppModel.shared`
+manager route, and named tests. It flags missing links for review without
+changing the project. This is a lexical source check, not a compiler, test run,
+or automatic CFA certification. The CFA Architecture Review skill uses its
+output as a starting map and checks important decisions in the actual code.
+
 ## Xcode Project Dashboard
 
 The easiest way to create a dashboard is to ask your AI coding tool:

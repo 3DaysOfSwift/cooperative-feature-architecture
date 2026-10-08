@@ -17,6 +17,7 @@ Identify, in plain language:
 2. The authoritative owner of each mutable piece of state.
 3. The asynchronous operation's creator, owner, cancellation policy and published outcome, when concurrency is involved.
 4. Whether an existing type already owns the responsibility.
+5. Whether two types have the same properties and functions. If they represent the same information and behaviour without a meaningful enforced distinction, keep one type.
 
 For every new Manager, ViewModel, protocol, actor or persistence type, state one concrete ownership sentence: “This type owns …”. Do not create it if that sentence only says it forwards a call, groups files, or might be useful later.
 

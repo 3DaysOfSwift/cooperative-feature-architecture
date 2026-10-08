@@ -32,6 +32,23 @@ test('doctor verifies installed skills without requiring optional project guidan
   assert.match(result.stdout, /INFO no optional CFA project guidance/);
 });
 
+test('installed inspect command reads a project without writing into it', (t) => {
+  const { directory, command } = installedCommand(t);
+  const project = path.join(directory, 'project');
+  const view = path.join(project, 'App', '1 - View', 'Views', 'Chat', 'ChatView.swift');
+  fs.mkdirSync(path.dirname(view), { recursive: true });
+  fs.writeFileSync(view, 'import SwiftUI\nstruct ChatView: View { var body: some View { Text("Hi") } }');
+  const before = fs.readdirSync(project, { recursive: true });
+
+  const result = spawnSync(command, ['inspect', project, '--json'], { encoding: 'utf8' });
+
+  assert.equal(result.status, 0, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.screens[0].name, 'ChatView');
+  assert.ok(report.findings.some(item => item.code === 'view-model-missing'));
+  assert.deepEqual(fs.readdirSync(project, { recursive: true }), before);
+});
+
 test('enable-project appends CFA guidance without overwriting existing instructions', (t) => {
   const { directory, command } = installedCommand(t);
   const project = path.join(directory, 'project');

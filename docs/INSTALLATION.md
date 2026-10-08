@@ -69,6 +69,11 @@ current Terminal folder with:
 cfa dashboard
 ```
 
+For a faster, read-only map of CFA screen ownership and missing routes or
+tests, run `cfa inspect` in the project folder (or pass its path). Add `--json`
+for machine-readable output. The inspector does not edit the app, run tests,
+or certify architectural correctness.
+
 The same command can confirm the installed CFA skills and optional project
 guidance:
 

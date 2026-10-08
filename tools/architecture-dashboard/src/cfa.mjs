@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { inspect, renderInspection } from './inspector.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const dashboardCLI = path.join(scriptDirectory, 'cli.mjs');
@@ -25,8 +26,8 @@ This iOS project uses Cooperative Feature Architecture (CFA). Match each
 request to the relevant installed CFA skill before changing the project.
 
 - Preserve the CFA call path: View → ViewModel → feature → provider or cache.
-- Every screen has a dedicated ViewModel. A concrete type may end in Manager,
-  but references to an app capability use the Feature suffix.
+- Every screen has a dedicated ViewModel. AppModel properties exposing feature
+  managers use the Manager suffix; ViewModels depend on narrow feature APIs.
 - Keep Views declarative. Feature state and business decisions belong outside
   the View layer.
 - Do not call an app CFA merely because it has numbered folders. Trace real
@@ -41,6 +42,7 @@ function usage() {
 
 Usage:
   cfa dashboard [project-folder] [dashboard options]
+  cfa inspect [project-folder] [--json]
   cfa doctor [project-folder]
   cfa enable-project [project-folder] [--host auto|codex|claude]
 
@@ -48,6 +50,7 @@ Examples:
   cfa dashboard
   cfa dashboard ~/Developer/MyApp
   cfa dashboard ~/Developer/MyApp --include-tests
+  cfa inspect ~/Developer/MyApp
   cfa doctor ~/Developer/MyApp
   cfa enable-project ~/Developer/MyApp --host claude
 
@@ -161,12 +164,26 @@ function dashboard(values) {
   }
 }
 
+async function inspectProject(values) {
+  let project;
+  let json = false;
+  while (values.length > 0) {
+    const value = values.shift();
+    if (value === '--json') json = true;
+    else if (!value.startsWith('--') && !project) project = value;
+    else throw Error(`Unknown or incomplete option: ${value}`);
+  }
+  const report = await inspect(projectDirectory(project));
+  console.log(json ? JSON.stringify(report, null, 2) : renderInspection(report));
+}
+
 try {
   if (!args.length || args.includes('--help') || args.includes('-h')) {
     usage();
   } else {
     const command = args.shift();
     if (command === 'dashboard') dashboard(args);
+    else if (command === 'inspect') await inspectProject(args);
     else if (command === 'doctor') doctor(args.shift());
     else if (command === 'enable-project') enableProject(args);
     else throw Error('Unknown CFA command. Run: cfa --help');

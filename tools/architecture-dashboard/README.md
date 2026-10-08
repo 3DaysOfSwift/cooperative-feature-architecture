@@ -17,6 +17,18 @@ For an AI-guided review, use the reusable prompt in [instructions.md](Documentat
 
 Requires Node.js 20 or newer. No package installation or network access is needed.
 
+For a quick read-only CFA ownership map, use the bundled command:
+
+```sh
+node src/cfa.mjs inspect /path/to/your-ios-repository
+node src/cfa.mjs inspect /path/to/your-ios-repository --json
+```
+
+It identifies screen/ViewModel pairs, visible `AppModel.shared` manager routes,
+manager collaborators, and named ViewModel tests. Findings are lexical leads to
+check in source; zero findings is not a conformance verdict. This command does
+not write a report or alter the inspected project.
+
 ```sh
 node src/cli.mjs /path/to/your-ios-repository --out reports/first-review
 open reports/first-review/report.html

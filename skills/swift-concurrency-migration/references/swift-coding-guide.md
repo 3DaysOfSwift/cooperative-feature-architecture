@@ -340,3 +340,30 @@ user agreement; adding a feature is not sufficient justification.
 ## Evolving this guide
 
 For each new principle, include the rule, reason, preferred approach, a small example when useful, and a review check. Cite official sources for language semantics. Distinguish our engineering preferences from language requirements. Keep this file canonical; update bundled skill copies through the toolkit's sync script.
+
+## Check for duplicate types
+
+Before adding or retaining two similar types, ask: **“Are their properties and functions the same? What concrete distinction requires both types?”**
+
+If they store the same information, provide the same behaviour and enforce no meaningful difference, use one type. Different names or positions in a call chain do not justify duplicate models. This avoids redundant conversions and makes examples easier to understand.
+
+For example, `WeightDraft` and `WeightEntry` that both contain the same validated day and kilograms should be one `WeightEntry`. Retain separate types only when a concrete distinction matters, such as unvalidated input versus validated data, different encoded formats, or preventing unrelated identifiers from being mixed up. State that distinction explicitly.
+
+## Persist individual changes without replacing unrelated records
+
+Matt’s engineering standard for apps and teaching examples: when adding, editing
+or removing one record, persist that record’s change by stable identity; never
+replace the whole collection from a caller’s in-memory snapshot.
+
+A stale snapshot can overwrite or delete unrelated records saved by another
+operation. Prefer repository operations such as `save(entry)` and `delete(id:)`
+that update only the intended record. Whole-dataset replacement belongs only to
+an explicitly requested replacement/import operation with its own integrity rules.
+
+Do not manufacture a concurrency lesson by first teaching unsafe persistence and
+later repairing it. Start from sound record-level storage. Distinguish a successful
+database write awaiting its UI-state update from data loss: a temporary difference
+between database and displayed state is not, by itself, evidence of a race bug.
+
+Review question: Does this single-record operation write or delete any unrelated
+record? Is the demonstrated concurrency consequence supported by the actual code?
