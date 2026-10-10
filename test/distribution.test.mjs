@@ -59,6 +59,12 @@ test('plugin staging preserves unrelated marketplace configuration and names',t=
  assert.deepEqual(json(market).interface,existing.interface);
  assert.equal(json(market).plugins[1].source.path,'./plugins/cooperative-feature-architecture');
  assert.ok(fs.existsSync(path.join(destination,'plugins/cooperative-feature-architecture/skills/cfa-app-creation/references/cfa-specification.md')));
+ const stagedPlugin=path.join(destination,'plugins/cooperative-feature-architecture');
+ const iconPath='./readme-images/CFA-Toolkit-AppIcon.png';
+ const brandedManifest=json(path.join(stagedPlugin,'.codex-plugin/plugin.json'));
+ assert.equal(brandedManifest.interface.logo,iconPath);
+ assert.equal(brandedManifest.interface.composerIcon,iconPath);
+ assert.equal(hash(path.join(stagedPlugin,iconPath)),hash(path.join(root,iconPath)));
 });
 
 test('installer rejects tampered releases before writing destination',t=>{

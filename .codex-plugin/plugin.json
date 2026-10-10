@@ -12,6 +12,8 @@
     "longDescription": "Eight skills for CFA app creation, feature work, architecture adoption, Legacy GCD migration, read-only architecture review, codebase tidying, unit tests and Swift code quality. Includes a local evidence dashboard. Created by 3DaysOfSwiftConcurrency.com.",
     "developerName": "3 Days of Swift Concurrency",
     "category": "Productivity",
+    "logo": "./readme-images/CFA-Toolkit-AppIcon.png",
+    "composerIcon": "./readme-images/CFA-Toolkit-AppIcon.png",
     "capabilities": [
       "Read",
       "Write"

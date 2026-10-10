@@ -9,6 +9,14 @@ export function validate(base=root,{source=true}={}) {
   if(manifest.name!=='cooperative-feature-architecture') throw Error('Unexpected plugin identifier.');
   if(!/^\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?$/.test(manifest.version)) throw Error('Invalid release version.');
   if(manifest.license!=='MIT' || manifest.skills!=='./skills/') throw Error('Missing licence or skills path.');
+  for (const field of ['logo', 'composerIcon']) {
+    const relative = manifest.interface?.[field];
+    if (relative !== './readme-images/CFA-Toolkit-AppIcon.png') throw Error(`CFA ${field} must use the toolkit icon.`);
+    const image = fs.readFileSync(path.join(base, relative));
+    if (image.length > 5_000_000 || image.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') throw Error(`Invalid CFA ${field} PNG.`);
+    const width = image.readUInt32BE(16), height = image.readUInt32BE(20);
+    if (width !== height || width < 48 || width > 4096) throw Error(`CFA ${field} must be a square image between 48 and 4096 pixels.`);
+  }
   if(source) {
     const portable=json(path.join(base,'plugin.json'));
     if(portable.name!==manifest.name || portable.version!==manifest.version) throw Error('Portable plugin manifest does not match Codex manifest.');
